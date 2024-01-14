@@ -1,0 +1,57 @@
+Flask
+Flask-RESTful
+Flask-Security-Too
+Flask-SQLAlchemy
+Flask-Mail
+Flask-Migrate
+flask-marshmallow
+Flask-WTF
+Flask-Bootstrap
+python-dotenv
+djlint
+marshmallow_sqlalchemy
+Flask-Admin
+Flask-Babel
+Flask-Cors
+requests
+faker
+# Flask-BabelEx
+
+# Flask-Caching
+# Flask-Login
+# Flask-Moment
+
+# Flask-Uploads
+# Flask-OAuthlib
+# Flask-JWT-Extended
+# Flask-Excel
+# flask-sse 
+# Werkzeug
+# requests
+# celery
+# # celery[redis]
+# redis
+# gunicorn
+# weasyprint
+
+
+
+# Flask-Testing
+
+
+# Flask-Session
+# Flask-Principal
+# Flask-Pydantic
+# Flask-Accepts
+# Flask-SocketIO
+# Flask-HTTPAuth
+
+# Flask-Limiter
+# Flask-Talisman
+# Flask-SeaSurf
+
+# Flask-Compress
+# Flask-Assets
+# Flask-FlatPages
+# Flask-GraphQL
+

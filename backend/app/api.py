@@ -1,17 +1,11 @@
-from flask import Blueprint, request, abort
+from flask import Blueprint, request
 from flask_restful import Resource, Api
-from .models import db, User, Book, Genre, Author, Member, Librarian, user_datastore
+from .models import db, User, Book, Genre, Author, Member, user_datastore
 from .schemas import (
     user_schema,
     users_schema,
-    book_schema,
-    books_schema,
-    genre_schema,
-    genres_schema,
     member_schema,
     members_schema,
-    librarian_schema,
-    librarians_schema,
     BookSchema,
     GenreSchema,
     AuthorSchema
@@ -65,39 +59,6 @@ class AuthorApi(BaseApi):
     model = Author
     schema = AuthorSchema()
     
-# class BookListApi(Resource):
-#     def get(self):
-#         books = Book.query.all()
-#         return books_schema.dump(books)
-
-#     def post(self):
-#         new_book = book_schema.load(request.json)
-#         db.session.add(new_book)
-#         db.session.commit()
-#         return book_schema.dump(new_book), 201
-
-
-# class BookApi(Resource):
-#     def get(self, book_id):
-#         book = Book.query.get_or_404(book_id)
-#         return book_schema.dump(book)
-
-#     def put(self, book_id):
-#         book = Book.query.get_or_404(book_id)
-#         # book = book_schema.load(request.json, instance=book, session=db.session)
-#         book = book_schema.load(request.json, instance=book)
-#         db.session.commit()
-#         return book_schema.dump(book)
-
-
-#     def delete(self, book_id):
-#         book = Book.query.get_or_404(book_id)
-#         db.session.delete(book)
-#         db.session.commit()
-#         return {"message": "Book deleted successfully."}
-
-
-
 
 class UserListApi(Resource):
     def get(self):

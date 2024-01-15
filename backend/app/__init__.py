@@ -47,7 +47,7 @@ def create_app():
     app.register_blueprint(api_bp)        
     # app.register_blueprint(user_api_call_bp)
     # app.register_blueprint(librarian_bp)
-    # app.register_blueprint(member_bp)
+    app.register_blueprint(member_bp)
     # app.register_blueprint(main_bp)
     # app.register_blueprint(api_call_bp)
 

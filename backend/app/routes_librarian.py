@@ -1,10 +1,9 @@
 from flask import Blueprint
-from flask import render_template, redirect, url_for, request, current_app
-from flask_security import login_required, hash_password
+from flask import render_template, redirect, url_for
 from .forms import EditUserForm, CreateUserForm, BookForm
-from .models import User, db, Genre, user_datastore, Book
+from .models import db, user_datastore, User
 from .services import create_book, get_all_books, get_book, update_book
-from .schemas import user_schema, users_schema, book_schema, books_schema
+
 librarian_bp = Blueprint("librarian_bp", __name__)
 
 

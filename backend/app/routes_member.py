@@ -1,37 +1,64 @@
-from flask import Blueprint
-from flask import request, jsonify
-from .models import db, Book, Genre, Author
-from .schemas import book_schema, genre_schema
+from flask import Blueprint, render_template, jsonify
+from flask_security import current_user
+from .models import db, BookLoan
+from datetime import datetime, timedelta
 
 member_bp = Blueprint('member_bp', __name__)
 
+def calculate_fine(days_late):
+    fine_per_day = 1.00  # Assuming a fine of $1 per day
+    return days_late * fine_per_day
 
 
-@member_bp.route('/books', methods=['GET'])
-def browse_books():
-    query = Book.query
+def get_member_id_from_session():
+    if not current_user.is_authenticated:
+        raise Exception("No member logged in")
+    return current_user.id
 
-    # Search functionality
-    title = request.args.get('title')
-    author_name = request.args.get('author')
-    genre_name = request.args.get('genre')
+@member_bp.route("/")
+def index():
+    return render_template("index.html")
 
-    if title:
-        query = query.filter(Book.title.ilike(f'%{title}%'))
-    if author_name:
-        query = query.join(Book.authors).filter(Author.name.ilike(f'%{author_name}%'))
-    if genre_name:
-        query = query.join(Book.genres).filter(Genre.name.ilike(f'%{genre_name}%'))
 
-    # Sorting functionality
-    sort_by = request.args.get('sort_by', 'title')  # Default sort by title
-    order = request.args.get('order', 'asc')        # Default order ascending
+@member_bp.route('/api/books/<int:book_id>/request', methods=['POST'])
+def request_book(book_id):
+    # Assume member_id is obtained from session or token
+    member_id = get_member_id_from_session()
 
-    if order == 'desc':
-        query = query.order_by(db.desc(getattr(Book, sort_by)))
-    else:
-        query = query.order_by(getattr(Book, sort_by))
+    # Create book loan
+    loan = BookLoan.create(
+        book_id=book_id,
+        member_id=member_id,
+        loan_date=datetime.utcnow(),
+        due_date=datetime.utcnow() + timedelta(days=14)  # 2 weeks loan period
+    )
+    db.session.commit()
+    
+    # Update book status (if needed)
+    
+    return jsonify({"message": "Book loan created", "loan_id": loan.id}), 200
 
-    # Execute query and return results
-    books = query.all()
-    return book_schema.dump(books)
+@member_bp.route('/api/books/<int:book_id>/return', methods=['POST'])
+def return_book(book_id):
+    member_id = get_member_id_from_session()
+    
+    # Retrieve the loan
+    loan = BookLoan.query.filter_by(book_id=book_id, member_id=member_id, returned_date=None).first()
+    if not loan:
+        return jsonify({"error": "Loan record not found"}), 404
+
+    # Calculate fine if overdue
+    if datetime.utcnow() > loan.due_date:
+        days_late = (datetime.utcnow() - loan.due_date).days
+        fine = calculate_fine(days_late)
+
+        # Update loan record with fine
+        loan.fine = fine
+        loan.status = "overdue"
+
+    loan.returned_date = datetime.utcnow()
+    db.session.commit()
+
+    # Update book status (if needed)
+
+    return jsonify({"message": "Book returned", "fine": loan.fine if loan.fine else 0.0}), 200

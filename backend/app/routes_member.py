@@ -20,12 +20,12 @@ def get_member_id_from_session():
 @member_bp.route("/api/books/<int:book_id>/request", methods=["POST"])
 def request_book(book_id):
     # Assume member_id is obtained from session or token
-    member_id = get_member_id_from_session()
+    # member_id = get_member_id_from_session()
 
     # Create book loan
     loan = BookLoan.create(
         book_id=book_id,
-        member_id=member_id,
+        member_id=current_user.id,
         loan_date=datetime.utcnow(),
         due_date=datetime.utcnow() + timedelta(days=14),  # 2 weeks loan period
     )
@@ -38,11 +38,11 @@ def request_book(book_id):
 
 @member_bp.route("/api/books/<int:book_id>/return", methods=["POST"])
 def return_book(book_id):
-    member_id = get_member_id_from_session()
+    # member_id = get_member_id_from_session()
 
     # Retrieve the loan
     loan = BookLoan.query.filter_by(
-        book_id=book_id, member_id=member_id, returned_date=None
+        book_id=book_id, member_id=current_user.id, returned_date=None
     ).first()
     if not loan:
         return jsonify({"error": "Loan record not found"}), 404

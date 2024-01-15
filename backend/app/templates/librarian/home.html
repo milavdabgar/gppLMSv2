@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block app_content %}
+    <h1>Welcome Librarian</h1>
+    <ul>
+        <li>
+            <a href="{{ url_for("librarian_bp.display_users") }}">User Management</a>
+        </li>
+        <li>
+            <a href="{{ url_for("api_call_bp.book_list") }}">Book Management</a>
+        </li>
+        <li>
+            <a href="{{ url_for("api_call_bp.genre_list") }}">Genre Management</a>
+        </li>
+        <li>
+            <a href="{{ url_for("api_call_bp.author_list") }}">Author Management</a>
+        </li>
+    </ul>
+{% endblock %}

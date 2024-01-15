@@ -70,11 +70,6 @@ def handle_form_submission(
         display_fields=display_fields
     )
 
-
-@api_call_bp.route("/")
-def index():
-    return render_template("librarian.html")
-
 # Existing book_list function
 @api_call_bp.route("/books", methods=["GET", "POST"])
 def book_list():
@@ -83,7 +78,7 @@ def book_list():
         BookForm,
         book_schema,
         "books",
-        "list.html",
+        "librarian/list.html",
         "api_call_bp.book_list",
         "Book List",
         "Edit Book",
@@ -99,7 +94,7 @@ def edit_book(id):
         BookForm,
         book_schema,
         "books",
-        "edit.html",
+        "librarian/edit.html",
         "api_call_bp.book_list",
         None,
         "Edit Book",
@@ -116,7 +111,7 @@ def genre_list():
         GenreForm,
         genre_schema,
         "genres",
-        "list.html",
+        "librarian/list.html",
         "api_call_bp.genre_list",
         "Genre List",
         "Edit Genre",
@@ -132,7 +127,7 @@ def edit_genre(id):
         GenreForm,
         genre_schema,
         "genres",
-        "edit.html",
+        "librarian/edit.html",
         "api_call_bp.genre_list",
         None,
         "Edit Genre",
@@ -149,7 +144,7 @@ def author_list():
         AuthorForm,
         author_schema,
         "authors",
-        "list.html",
+        "librarian/list.html",
         "api_call_bp.author_list",
         "Author List",
         "Edit Author",
@@ -165,7 +160,7 @@ def edit_author(id):
         AuthorForm,
         author_schema,
         "authors",
-        "edit.html",
+        "librarian/edit.html",
         "api_call_bp.author_list",
         None,
         "Edit Author",

@@ -44,12 +44,11 @@ def create_app():
 
     # Register Blueprints
     # app.register_blueprint(user_api_bp, user_datastore=user_datastore)
-    app.register_blueprint(api_bp)        
-    # app.register_blueprint(user_api_call_bp)
-    # app.register_blueprint(librarian_bp)
+    app.register_blueprint(api_bp)
+    app.register_blueprint(api_call_bp)
     app.register_blueprint(member_bp)
+    app.register_blueprint(librarian_bp)
     # app.register_blueprint(main_bp)
-    # app.register_blueprint(api_call_bp)
 
     # # This is for streaming
     # app.register_blueprint(sse, url_prefix="/stream")

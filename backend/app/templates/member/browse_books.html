@@ -1,39 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse Books</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <h1>Browse Books</h1>
-        <form action="{{ url_for('browse_books') }}" method="get" class="form-inline mb-4">
-            <input type="text" name="title" class="form-control mr-sm-2" placeholder="Search by title">
-            <input type="text" name="author" class="form-control mr-sm-2" placeholder="Search by author">
-            <input type="text" name="genre" class="form-control mr-sm-2" placeholder="Search by genre">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author(s)</th>
-                    <th>Genre(s)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in books %}
-                <tr>
-                    <td>{{ book.title }}</td>
-                    <td>{{ ', '.join([author.name for author in book.authors]) }}</td>
-                    <td>{{ ', '.join([genre.name for genre in book.genres]) }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block app_content %}
+    <h1>{{ 'Book List' }}</h1>
+    <div class="row">
+        <div class="col-md-4">{{ wtf.quick_form(form) }}</div>
     </div>
-</body>
-</html>
+    <ul>
+        {% for book in books %}
+            <li>
+                <a href="{{ url_for('api_call_bp.edit_book', book_id=book.id) }}">{{ book.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

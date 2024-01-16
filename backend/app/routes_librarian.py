@@ -40,11 +40,22 @@ def show_user(user_id):
 def add_user():
     form = UserForm()
     if form.validate_on_submit():
-        data = {k: v for k, v in form.data.items() if k != "submit"}
+        # Create a new user with the basic fields
+        data = {k: v for k, v in form.data.items() if k not in ["submit", "roles"]}
         user = user_datastore.create_user(**data)
+
+        # Handle roles separately
+        role_ids = form.roles.data
+        user.roles = Role.query.filter(Role.id.in_(role_ids)).all()
+
+        # Commit the new user to the database
+        db.session.add(user)
         db.session.commit()
-        return redirect(url_for("librarian_bp.display_users", user_id=user.id))
+
+        return redirect(url_for("librarian_bp.display_users"))
+    
     return render_template("librarian/user_add.html", form=form)
+
 
 
 @librarian_bp.route("/user/edit/<int:user_id>", methods=["GET", "POST"])

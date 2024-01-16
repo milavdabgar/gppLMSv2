@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from flask_restful import Resource, Api
-from .models import db, user_datastore, User, Book, Genre, Author, Member, Librarian
+from .models import db, user_datastore, User, Role, Book, Genre, Author, Member, Librarian
 from .schemas import (
     BookSchema,
     GenreSchema,
@@ -62,11 +62,26 @@ class UserApi(BaseApi):
     model = User
     schema = UserSchema()
 
+    # def post(self):
+    #     data = self.schema.load(request.json)
+    #     user = user_datastore.create_user(**data)
+    #     db.session.commit()
+    #     return self.schema.dump(user), 201
     def post(self):
-        data = self.schema.load(request.json)
+        data = request.json
+        # Assuming roles are passed as a list of role IDs in the JSON
+        role_ids = data.pop('roles', [])
+
+        # Create a new user with the extracted data
         user = user_datastore.create_user(**data)
-        db.session.commit()
-        return self.schema.dump(user), 201
+
+        # Query Role objects based on role_ids and assign them to the user
+        if role_ids:
+            user.roles = Role.query.filter(Role.id.in_(role_ids)).all()
+
+        # Commit the new user to the database
+        db.session.add(user)
+        db.session.commit()        
 
 class MemberApi(UserApi):
     model = Member

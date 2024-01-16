@@ -106,6 +106,10 @@ class User(db.Model, UserMixin, CRUDMixin):
     )
     type = db.Column(db.String(50))
 
+class Admin(User):
+    __mapper_args__ = {'polymorphic_identity': 'admin'}
+    id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+
 class Librarian(User):
     __mapper_args__ = {'polymorphic_identity': 'librarian'}
     id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)

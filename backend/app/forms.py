@@ -45,10 +45,14 @@ class UserForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired(), Email()])
     type = SelectField(
         "User Type",
-        choices=[("admin", "Admin"), ("librarian", "Librarian"), ("member", "Member")],
+        choices=[
+            ("user", "User"),
+            ("admin", "Admin"),
+            ("librarian", "Librarian"),
+            ("member", "Member"),
+        ],
     )
     roles = SelectMultipleField(
-        "Roles",
-        choices=[("admin", "Admin"), ("librarian", "Librarian"), ("member", "Member")],
+        "Roles", choices=[("1", "Admin"), ("2", "Librarian"), ("3", "Member")]
     )
     submit = SubmitField("Submit")

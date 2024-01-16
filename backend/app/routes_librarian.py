@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask import render_template, redirect, url_for
 from flask_security import current_user
 from .forms import UserForm, BookForm
-from .models import db, user_datastore, User
+from .models import db, user_datastore, User, Role
 from .services import create_book, get_all_books, get_book, update_book
 
 librarian_bp = Blueprint("librarian_bp", __name__)
@@ -14,11 +14,12 @@ def index():
     #     return url_for("security.login")
     return render_template("index.html")
 
-@librarian_bp.route('/home')
+
+@librarian_bp.route("/home")
 def home():
-    if current_user.roles in ['admin', 'librarian']:
-        return render_template('member/home.html')
-    return render_template('librarian/home.html')
+    if current_user.roles in ["admin", "librarian"]:
+        return render_template("member/home.html")
+    return render_template("librarian/home.html")
 
 
 @librarian_bp.route("/user/display")
@@ -50,11 +51,35 @@ def add_user():
 def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     form = UserForm(obj=user)
+
     if form.validate_on_submit():
+        # Temporarily remove 'roles' field from the form
+        roles_field = form._fields.pop('roles', None)
+
+        # Use populate_obj for other fields
         form.populate_obj(user)
+
+        # Add 'roles' field back to the form
+        if roles_field:
+            form._fields['roles'] = roles_field
+
+        # Manually handle 'roles' field
+        user.roles.clear()
+        for role_id in roles_field.data:
+            role = Role.query.get(int(role_id))
+            if role:
+                user.roles.append(role)
+
         db.session.commit()
         return redirect(url_for("librarian_bp.display_users", user_id=user.id))
+
+    # Pre-select the current roles in the form
+    form.roles.data = [str(role.id) for role in user.roles]
+
     return render_template("librarian/user_edit.html", form=form, user=user)
+
+
+
 
 
 @librarian_bp.route("/user/delete/<int:user_id>", methods=["GET", "POST"])

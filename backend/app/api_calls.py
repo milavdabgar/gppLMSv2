@@ -1,7 +1,7 @@
 # app.py
 from flask import Blueprint, render_template, redirect, url_for
-from .forms import BookForm, GenreForm, AuthorForm
-from .schemas import book_schema, genre_schema, author_schema
+from .forms import BookForm, GenreForm, AuthorForm, UserForm
+from .schemas import book_schema, genre_schema, author_schema, user_schema
 from .models import db
 import requests
 
@@ -75,14 +75,14 @@ def handle_form_submission(
 def book_list():
     display_fields = [("title", "isbn_13")]
     return handle_form_submission(
-        BookForm,
-        book_schema,
-        "books",
-        "librarian/list.html",
-        "api_call_bp.book_list",
-        "Book List",
-        "Edit Book",
-        "api_call_bp.edit_book",
+        form_class = BookForm,
+        schema = book_schema,
+        endpoint = "books",
+        template = "librarian/list.html",
+        redirect_endpoint = "api_call_bp.book_list",
+        list_title = "Book List",
+        edit_title = "Edit Book",
+        edit_route = "api_call_bp.edit_book",
         display_fields=display_fields
     )
 
@@ -91,14 +91,14 @@ def book_list():
 def edit_book(id):
     display_fields = [("title", "isbn_13")]
     return handle_form_submission(
-        BookForm,
-        book_schema,
-        "books",
-        "librarian/edit.html",
-        "api_call_bp.book_list",
-        None,
-        "Edit Book",
-        None,
+        form_class = BookForm,
+        schema=book_schema,
+        endpoint="books",
+        template="librarian/edit.html",
+        redirect_endpoint="api_call_bp.book_list",
+        list_title=None,
+        edit_title="Edit Book",
+        edit_route=None,
         id=id,
         display_fields=display_fields
     )
@@ -108,14 +108,14 @@ def edit_book(id):
 def genre_list():
     display_fields = [("name", "description")]
     return handle_form_submission(
-        GenreForm,
-        genre_schema,
-        "genres",
-        "librarian/list.html",
-        "api_call_bp.genre_list",
-        "Genre List",
-        "Edit Genre",
-        "api_call_bp.edit_genre",
+        form_class=GenreForm,
+        schema=genre_schema,
+        endpoint="genres",
+        template="librarian/list.html",
+        redirect_endpoint="api_call_bp.genre_list",
+        list_title="Genre List",
+        edit_title="Edit Genre",
+        edit_route="api_call_bp.edit_genre",
         display_fields=display_fields
     )
 
@@ -124,14 +124,14 @@ def genre_list():
 def edit_genre(id):
     display_fields = [("name", "description")]
     return handle_form_submission(
-        GenreForm,
-        genre_schema,
-        "genres",
-        "librarian/edit.html",
-        "api_call_bp.genre_list",
-        None,
-        "Edit Genre",
-        None,
+        form_class=GenreForm,
+        schema=genre_schema,
+        endpoint="genres",
+        template="librarian/edit.html",
+        redirect_endpoint="api_call_bp.genre_list",
+        list_title=None,
+        edit_title="Edit Genre",
+        edit_route=None,
         id=id,
         display_fields=display_fields
     )
@@ -141,14 +141,14 @@ def edit_genre(id):
 def author_list():
     display_fields = [("name", "biography")]
     return handle_form_submission(
-        AuthorForm,
-        author_schema,
-        "authors",
-        "librarian/list.html",
-        "api_call_bp.author_list",
-        "Author List",
-        "Edit Author",
-        "api_call_bp.edit_author",
+        form_class=AuthorForm,
+        schema=author_schema,
+        endpoint="authors",
+        template="librarian/list.html",
+        redirect_endpoint="api_call_bp.author_list",
+        list_title="Author List",
+        edit_title="Edit Author",
+        edit_route="api_call_bp.edit_author",
         display_fields=display_fields
     )
 
@@ -157,14 +157,46 @@ def author_list():
 def edit_author(id):
     display_fields = [("name", "biography")]
     return handle_form_submission(
-        AuthorForm,
-        author_schema,
-        "authors",
-        "librarian/edit.html",
-        "api_call_bp.author_list",
-        None,
-        "Edit Author",
-        None,
+        form_class=AuthorForm,
+        schema=author_schema,
+        endpoint="authors",
+        template="librarian/edit.html",
+        redirect_endpoint="api_call_bp.author_list",
+        list_title=None,
+        edit_title="Edit Author",
+        edit_route=None,
+        id=id,
+        display_fields=display_fields
+    )
+
+@api_call_bp.route("/users", methods=["GET", "POST"])
+def user_list():
+    display_fields = [("email", "first_name")]
+    return handle_form_submission(
+        form_class=UserForm,
+        schema=user_schema,
+        endpoint="users",
+        template="librarian/list.html",
+        redirect_endpoint="api_call_bp.user_list",
+        list_title="User List",
+        edit_title="Edit User",
+        edit_route="api_call_bp.edit_user",
+        display_fields=display_fields
+    )
+
+# Edit user function
+@api_call_bp.route("/users/<int:id>", methods=["GET", "POST"])
+def edit_user(id):
+    display_fields = [("email", "first_name")]
+    return handle_form_submission(
+        form_class=UserForm,
+        schema=user_schema,
+        endpoint="users",
+        template="librarian/edit.html",
+        redirect_endpoint="api_call_bp.user_list",
+        list_title=None,
+        edit_title="Edit User",
+        edit_route=None,
         id=id,
         display_fields=display_fields
     )

@@ -68,20 +68,29 @@ class UserApi(BaseApi):
     #     db.session.commit()
     #     return self.schema.dump(user), 201
     def post(self):
-        data = request.json
-        # Assuming roles are passed as a list of role IDs in the JSON
+        # Load data from request
+        data = self.schema.load(request.json)
+
+        # Extract role IDs and remove 'roles' key from data dictionary
         role_ids = data.pop('roles', [])
 
-        # Create a new user with the extracted data
+        # Create a new user
         user = user_datastore.create_user(**data)
 
-        # Query Role objects based on role_ids and assign them to the user
+        # Handle role assignments if role IDs are provided
         if role_ids:
-            user.roles = Role.query.filter(Role.id.in_(role_ids)).all()
+            # Fetch roles from the database based on the provided IDs
+            roles = Role.query.filter(Role.id.in_(role_ids)).all()
 
-        # Commit the new user to the database
+            # Assign these roles to the user
+            user.roles = roles  # Replacing the list, assuming 'roles' is a list of role objects
+
+        # Add the new user to the session and commit the transaction
         db.session.add(user)
-        db.session.commit()        
+        db.session.commit()
+
+        # Return the created user
+        return self.schema.dump(user), 201    
 
 class MemberApi(UserApi):
     model = Member

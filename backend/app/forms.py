@@ -7,8 +7,10 @@ from wtforms import (
     SelectMultipleField,
     DateField,
     TextAreaField,
+    PasswordField,
 )
 from wtforms.validators import DataRequired, Email
+from .models import Role
 
 # class SelectMultipleField(SelectMultipleField):
 #     def process_formdata(self, valuelist):
@@ -56,3 +58,18 @@ class UserForm(FlaskForm):
         "Roles", choices=[("1", "Admin"), ("2", "Librarian"), ("3", "Member")]
     )
     submit = SubmitField("Submit")
+
+    
+
+
+class CreateUserForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    roles = SelectMultipleField('Roles', coerce=int)
+    submit = SubmitField("Submit")
+
+    def __init__(self, *args, **kwargs):
+        super(CreateUserForm, self).__init__(*args, **kwargs)
+        self.roles.choices = [(role.id, role.name) for role in Role.query.all()]
+
+

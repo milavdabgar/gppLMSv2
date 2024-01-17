@@ -28,8 +28,10 @@ def api_call(endpoint, method="get", data=None, id=None, schema=None):
         elif method == "put":
             response = requests.put(url, json=serialized_data)
 
-    return response.json()
-
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return response.text
 
 def handle_form_submission(
     form_class,

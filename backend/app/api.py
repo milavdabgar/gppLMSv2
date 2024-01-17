@@ -58,39 +58,57 @@ class AuthorApi(BaseApi):
     model = Author
     schema = AuthorSchema()
 
+def create_user_with_roles(data):
+    print("Received data:", data)
+
+    role_ids = data.pop('roles', [])
+    print("Extracted role IDs:", role_ids)
+
+    user = user_datastore.create_user(**data)
+    db.session.flush()  # Assigns an ID to user
+
+    if role_ids:
+        roles = Role.query.filter(Role.id.in_(role_ids)).all()
+        print("Fetched roles:", roles)
+        user.roles = roles
+        print("User after assigning roles:", user)
+
+    db.session.commit()
+    return user
+
+
+
+
 class UserApi(BaseApi):
     model = User
-    schema = UserSchema()
+    schema = UserSchema(load_instance=False)
 
     # def post(self):
     #     data = self.schema.load(request.json)
     #     user = user_datastore.create_user(**data)
     #     db.session.commit()
     #     return self.schema.dump(user), 201
+    
+  
+    
     def post(self):
-        # Load data from request
         data = self.schema.load(request.json)
+        print(data)
 
-        # Extract role IDs and remove 'roles' key from data dictionary
         role_ids = data.pop('roles', [])
+        print(role_ids)
 
-        # Create a new user
+        # Create user without roles
         user = user_datastore.create_user(**data)
+        db.session.flush()  # Assigns an ID to user
 
-        # Handle role assignments if role IDs are provided
+        # Assign roles
         if role_ids:
-            # Fetch roles from the database based on the provided IDs
             roles = Role.query.filter(Role.id.in_(role_ids)).all()
+            user.roles = roles
 
-            # Assign these roles to the user
-            user.roles = roles  # Replacing the list, assuming 'roles' is a list of role objects
-
-        # Add the new user to the session and commit the transaction
-        db.session.add(user)
         db.session.commit()
-
-        # Return the created user
-        return self.schema.dump(user), 201    
+        return self.schema.dump(user), 201
 
 class MemberApi(UserApi):
     model = Member

@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask import render_template, redirect, url_for
 from flask_security import current_user
-from .forms import UserForm, BookForm
+from .forms import UserForm, BookForm, CreateUserForm
 from .models import db, user_datastore, User, Role
 from .services import create_book, get_all_books, get_book, update_book
 
@@ -101,6 +101,19 @@ def delete_user(user_id):
         db.session.commit()
         return redirect(url_for("librarian_bp.display_users", user_id=user.id))
     return render_template("librarian/user_delete.html", user=user)
+
+@librarian_bp.route('/create_user', methods=['GET', 'POST'])
+def create_user():
+    form = CreateUserForm()
+    if form.validate_on_submit():
+        user = user_datastore.create_user(email=form.email.data, password=form.password.data)
+        for role_name in form.roles.data:
+            role = Role.query.filter_by(name=role_name).first()
+            user_datastore.add_role_to_user(user, role)
+        db.session.commit()
+        return 'User created!'
+    return render_template("librarian/user_add.html", form=form)
+
 
 
 # @librarian_bp.route("/books", methods=["GET", "POST"])

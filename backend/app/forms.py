@@ -51,11 +51,10 @@ class UserForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
-        self.type.choices = [role.name for role in Role.query.all()]
+        self.type.choices = [(role.name.lower(),role.name) for role in Role.query.all()]
         self.roles.choices = [(str(role.id), role.name) for role in Role.query.all()]
 
-
-     
+    
 
 class CreateUserForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired()])

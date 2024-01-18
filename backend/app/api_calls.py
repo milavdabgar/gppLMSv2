@@ -21,6 +21,7 @@ def api_call(endpoint, method="get", data=None, id=None, schema=None):
     elif method in ["post", "put"]:
         if schema is not None:
             serialized_data = schema.dump(data)
+            print(serialized_data)
         else:
             serialized_data = data
         if method == "post":

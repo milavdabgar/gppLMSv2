@@ -26,11 +26,20 @@ class RoleSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
 
 
+# class UserSchema(ma.SQLAlchemyAutoSchema):
+#     class Meta:
+#         model = User
+#         load_instance = True
+#         exclude = ("fs_uniquifier",)
+
 class UserSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = User
-        load_instance = True
+        load_instance = False
         exclude = ("fs_uniquifier",)
+
+    # Explicitly define the roles field
+    roles = fields.List(fields.Integer())
 
 
 class LibrarianSchema(ma.SQLAlchemyAutoSchema):

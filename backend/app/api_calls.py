@@ -2,7 +2,6 @@
 from flask import Blueprint, render_template, redirect, url_for
 from .forms import BookForm, GenreForm, AuthorForm, UserForm
 from .schemas import book_schema, genre_schema, author_schema, user_schema
-from .models import db
 import requests
 
 api_call_bp = Blueprint("api_call_bp", __name__)

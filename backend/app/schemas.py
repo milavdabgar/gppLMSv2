@@ -1,6 +1,4 @@
 from app.extensions import ma
-from marshmallow import fields
-from marshmallow_sqlalchemy.fields import Nested
 from .extensions import db
 
 from .models import (
@@ -17,7 +15,7 @@ from .models import (
     Transaction,
     BookLoan,
     Purchase,
-    Review
+    Review,
 )
 
 
@@ -28,20 +26,17 @@ class RoleSchema(ma.SQLAlchemyAutoSchema):
         sqla_session = db.session
 
 
-# class UserSchema(ma.SQLAlchemyAutoSchema):
-#     class Meta:
-#         model = User
-#         load_instance = True
-#         exclude = ("fs_uniquifier",)
-
 class UserSchema(ma.SQLAlchemyAutoSchema):
-    roles = ma.Nested(RoleSchema, many=True, only=['id', 'name'])
+    roles = ma.Nested(RoleSchema, many=True, only=["id", "name"])
+
     class Meta:
         model = User
-        load_instance = False
+        load_instance = True
         sqla_session = db.session
-        exclude = ("fs_uniquifier", "password",)
-        # include_fk = True
+        exclude = (
+            "fs_uniquifier",
+            "password",
+        )
 
 
 class LibrarianSchema(ma.SQLAlchemyAutoSchema):
@@ -55,7 +50,7 @@ class MemberSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Member
         load_instance = True
-        sqla_session = db.session
+        sqla_session = db.session        
 
 
 class MembershipSchema(ma.SQLAlchemyAutoSchema):
@@ -64,13 +59,11 @@ class MembershipSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         sqla_session = db.session
 
-
 class WishlistSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Wishlist
         load_instance = True
         sqla_session = db.session
-
 
 class CollectionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -78,13 +71,11 @@ class CollectionSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         sqla_session = db.session
 
-
 class GenreSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Genre
         load_instance = True
         sqla_session = db.session
-
 
 class AuthorSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -92,26 +83,11 @@ class AuthorSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         sqla_session = db.session
 
-
-class BookSchema(ma.SQLAlchemyAutoSchema):  
-    authors = ma.Nested(AuthorSchema, many=True, only=['id', 'name'])
-    genres = ma.Nested(GenreSchema, many=True, only=['id', 'name'])
-    collections = ma.Nested(CollectionSchema, many=True) 
-    class Meta:
-        model = Book
-        load_instance = True
-        sqla_session = db.session
-        # include_fk = True
-        
-
-
-
 class TransactionSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Transaction
         load_instance = True
         sqla_session = db.session
-
 
 class BookLoanSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -119,13 +95,11 @@ class BookLoanSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         sqla_session = db.session
 
-
 class PurchaseSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Purchase
         load_instance = True
         sqla_session = db.session
-
 
 class ReviewSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -133,27 +107,42 @@ class ReviewSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         sqla_session = db.session
 
+class BookSchema(ma.SQLAlchemyAutoSchema):
+    authors = ma.Nested(AuthorSchema, many=True, only=["id", "name"])
+    genres = ma.Nested(GenreSchema, many=True, only=["id", "name"])
+    collections = ma.Nested(CollectionSchema, many=True)
+    wishlists = ma.Nested(WishlistSchema, many=True)
+    free_access_in_memberships = ma.Nested(MembershipSchema, many=True)
+    transactions = ma.Nested(TransactionSchema, many=True)
+    book_loans = ma.Nested(BookLoanSchema, many=True)
+    purchases = ma.Nested(PurchaseSchema, many=True)
+    reviews = ma.Nested(ReviewSchema, many=True)
+
+    class Meta:
+        model = Book
+        load_instance = True
+        sqla_session = db.session
 
 role_schema = RoleSchema()
-roles_schema = RoleSchema(many = True)
+roles_schema = RoleSchema(many=True)
 
 user_schema = UserSchema()
-users_schema = UserSchema(many = True)
+users_schema = UserSchema(many=True)
 
 librarian_schema = LibrarianSchema()
-librarians_schema = LibrarianSchema(many = True)
+librarians_schema = LibrarianSchema(many=True)
 
 member_schema = MemberSchema()
-members_schema = MemberSchema(many = True)
+members_schema = MemberSchema(many=True)
 
 membership_schema = MembershipSchema()
-memberships_schema = MembershipSchema(many = True)
+memberships_schema = MembershipSchema(many=True)
 
 wishlist_schema = WishlistSchema()
-wishlists_schema = WishlistSchema(many = True)
+wishlists_schema = WishlistSchema(many=True)
 
 collections_schema = CollectionSchema()
-collections_schema = CollectionSchema(many = True)
+collections_schema = CollectionSchema(many=True)
 
 genre_schema = GenreSchema()
 genres_schema = GenreSchema(many=True)

@@ -40,14 +40,14 @@ class BaseApi(Resource):
             return self.schema.dump(objs, many=True)
 
     def post(self):
-        obj = self.schema.load(request.json, session=db.session)
+        obj = self.schema.load(request.json)
         db.session.add(obj)
         db.session.commit()
         return self.schema.dump(obj), 201
 
     def put(self, id):
         obj = self.model.query.get_or_404(id)
-        updated_obj = self.schema.load(request.json, instance=obj, session=db.session)
+        updated_obj = self.schema.load(request.json, instance=obj)
         db.session.commit()
         return self.schema.dump(updated_obj)
 
@@ -57,54 +57,16 @@ class BaseApi(Resource):
         db.session.commit()
         return "", 204
 
-class MyApi(Resource):
-    model = None
-    schema = None
-
-    def get(self, id=None):
-        if id:
-            obj = self.model.query.get_or_404(id)
-            return self.schema.dump(obj)
-        else:
-            objs = self.model.query.all()
-            return self.schema.dump(objs, many=True)
-
-    def post(self):
-        data = self.schema.load(request.json)
-        obj = self.model(**data)
-        db.session.add(obj)
-        db.session.commit()
-        return self.schema.dump(obj), 201
-
-    def put(self, id):
-        obj = self.model.query.get_or_404(id)
-        data = self.schema.load(request.json)
-        for key, value in data.items():
-            setattr(obj, key, value)
-        db.session.commit()
-        return self.schema.dump(obj)
-
-    def delete(self, id):
-        obj = self.model.query.get_or_404(id)
-        db.session.delete(obj)
-        db.session.commit()
-        return "", 204
-
-
-class UserApi(MyApi):
+class UserApi(BaseApi):
     model = User
     schema = UserSchema()
 
     def post(self):
-        data = self.schema.load(request.json)
-
-        # Create a new user with the provided data
+        schema = UserSchema(load_instance=False)
+        data = schema.load(request.json)
         user = user_datastore.create_user(**data)
-
-        # Commit the new user to the database
         db.session.add(user)
         db.session.commit()
-
         return self.schema.dump(user), 201
 
 

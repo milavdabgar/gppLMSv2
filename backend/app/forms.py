@@ -9,12 +9,9 @@ from wtforms import (
     TextAreaField,
     PasswordField,
 )
+from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.validators import DataRequired, Email
 from .models import Role
-
-# class SelectMultipleField(SelectMultipleField):
-#     def process_formdata(self, valuelist):
-#         self.data = [int(x) for x in valuelist]
 
 
 class BookForm(FlaskForm):
@@ -46,15 +43,17 @@ class UserForm(FlaskForm):
     username = StringField("User Name", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
     type = SelectField("Type", coerce=str)
-    roles = SelectMultipleField("Roles", coerce=int)
+    roles = QuerySelectMultipleField(
+        "Roles", query_factory=lambda: Role.query.all(), get_label="name"
+    )
     submit = SubmitField("Submit")
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
-        self.type.choices = [(role.name.lower(),role.name) for role in Role.query.all()]
-        self.roles.choices = [(str(role.id), role.name) for role in Role.query.all()]
+        self.type.choices = [
+            (role.name.lower(), role.name) for role in Role.query.all()
+        ]
 
-    
 
 class CreateUserForm(FlaskForm):
     email = StringField("Email", validators=[DataRequired()])

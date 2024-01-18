@@ -21,7 +21,6 @@ def api_call(endpoint, method="get", data=None, id=None, schema=None):
     elif method in ["post", "put"]:
         if schema is not None:
             serialized_data = schema.dump(data)
-            print(serialized_data)
         else:
             serialized_data = data
         if method == "post":
@@ -59,7 +58,7 @@ def handle_form_submission(
 
     if id:
         item_data = api_call(endpoint, id=id)
-        item = schema.load(item_data, session=db.session)
+        item = schema.load(item_data)
         form = form_class(obj=item)
 
     items = api_call(endpoint) if not id else None

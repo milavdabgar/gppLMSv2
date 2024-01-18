@@ -6,6 +6,7 @@ Flask-Mail
 Flask-Migrate
 flask-marshmallow
 Flask-WTF
+WTForms-SQLAlchemy
 Flask-Bootstrap
 python-dotenv
 djlint

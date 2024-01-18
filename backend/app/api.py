@@ -1,11 +1,9 @@
 from flask import Blueprint, request
 from flask_restful import Resource, Api
-from flask_restful import reqparse
 from .models import (
     db,
     user_datastore,
     User,
-    Role,
     Book,
     Genre,
     Author,
@@ -57,6 +55,7 @@ class BaseApi(Resource):
         db.session.commit()
         return "", 204
 
+
 class UserApi(BaseApi):
     model = User
     schema = UserSchema()
@@ -68,7 +67,6 @@ class UserApi(BaseApi):
         db.session.add(user)
         db.session.commit()
         return self.schema.dump(user), 201
-
 
 
 class MemberApi(UserApi):

@@ -53,14 +53,3 @@ class UserForm(FlaskForm):
         self.type.choices = [
             (role.name.lower(), role.name) for role in Role.query.all()
         ]
-
-
-class CreateUserForm(FlaskForm):
-    email = StringField("Email", validators=[DataRequired()])
-    password = PasswordField("Password", validators=[DataRequired()])
-    roles = SelectMultipleField("Roles", coerce=int)
-    submit = SubmitField("Submit")
-
-    def __init__(self, *args, **kwargs):
-        super(CreateUserForm, self).__init__(*args, **kwargs)
-        self.roles.choices = [(role.id, role.name) for role in Role.query.all()]

@@ -1,4 +1,3 @@
-# app.py
 from flask import Blueprint, render_template, redirect, url_for
 from .forms import BookForm, GenreForm, AuthorForm, UserForm
 from .schemas import book_schema, genre_schema, author_schema, user_schema
@@ -31,6 +30,7 @@ def api_call(endpoint, method="get", data=None, id=None, schema=None):
         return response.json()
     else:
         return response.text
+
 
 def handle_form_submission(
     form_class,
@@ -68,31 +68,33 @@ def handle_form_submission(
         list_title=list_title,
         edit_title=edit_title,
         edit_route=edit_route,
-        display_fields=display_fields
+        display_fields=display_fields,
     )
+
 
 # Existing book_list function
 @api_call_bp.route("/books", methods=["GET", "POST"])
 def book_list():
     display_fields = [("title", "isbn_13")]
     return handle_form_submission(
-        form_class = BookForm,
-        schema = book_schema,
-        endpoint = "books",
-        template = "librarian/list.html",
-        redirect_endpoint = "api_call_bp.book_list",
-        list_title = "Book List",
-        edit_title = "Edit Book",
-        edit_route = "api_call_bp.edit_book",
-        display_fields=display_fields
+        form_class=BookForm,
+        schema=book_schema,
+        endpoint="books",
+        template="librarian/list.html",
+        redirect_endpoint="api_call_bp.book_list",
+        list_title="Book List",
+        edit_title="Edit Book",
+        edit_route="api_call_bp.edit_book",
+        display_fields=display_fields,
     )
+
 
 # Edit book function
 @api_call_bp.route("/books/<int:id>", methods=["GET", "POST"])
 def edit_book(id):
     display_fields = [("title", "isbn_13")]
     return handle_form_submission(
-        form_class = BookForm,
+        form_class=BookForm,
         schema=book_schema,
         endpoint="books",
         template="librarian/edit.html",
@@ -101,8 +103,9 @@ def edit_book(id):
         edit_title="Edit Book",
         edit_route=None,
         id=id,
-        display_fields=display_fields
+        display_fields=display_fields,
     )
+
 
 # Genre list function
 @api_call_bp.route("/genres", methods=["GET", "POST"])
@@ -117,8 +120,9 @@ def genre_list():
         list_title="Genre List",
         edit_title="Edit Genre",
         edit_route="api_call_bp.edit_genre",
-        display_fields=display_fields
+        display_fields=display_fields,
     )
+
 
 # Edit genre function
 @api_call_bp.route("/genres/<int:id>", methods=["GET", "POST"])
@@ -134,8 +138,9 @@ def edit_genre(id):
         edit_title="Edit Genre",
         edit_route=None,
         id=id,
-        display_fields=display_fields
+        display_fields=display_fields,
     )
+
 
 # Author list function
 @api_call_bp.route("/authors", methods=["GET", "POST"])
@@ -150,8 +155,9 @@ def author_list():
         list_title="Author List",
         edit_title="Edit Author",
         edit_route="api_call_bp.edit_author",
-        display_fields=display_fields
+        display_fields=display_fields,
     )
+
 
 # Edit author function
 @api_call_bp.route("/authors/<int:id>", methods=["GET", "POST"])
@@ -167,8 +173,9 @@ def edit_author(id):
         edit_title="Edit Author",
         edit_route=None,
         id=id,
-        display_fields=display_fields
+        display_fields=display_fields,
     )
+
 
 @api_call_bp.route("/users", methods=["GET", "POST"])
 def user_list():
@@ -182,8 +189,9 @@ def user_list():
         list_title="User List",
         edit_title="Edit User",
         edit_route="api_call_bp.edit_user",
-        display_fields=display_fields
+        display_fields=display_fields,
     )
+
 
 # Edit user function
 @api_call_bp.route("/users/<int:id>", methods=["GET", "POST"])
@@ -199,5 +207,5 @@ def edit_user(id):
         edit_title="Edit User",
         edit_route=None,
         id=id,
-        display_fields=display_fields
+        display_fields=display_fields,
     )

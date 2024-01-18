@@ -27,15 +27,10 @@ class RoleSchema(ma.SQLAlchemyAutoSchema):
 
 
 class UserSchema(ma.SQLAlchemyAutoSchema):
-    # roles = Nested(RoleSchema, many=True)  # many=True for many-to-many relationship
-    # Assuming roles are just a list of role IDs
-    roles = fields.List(fields.Integer())
-
     class Meta:
         model = User
-        load_instance = True  # Set this according to your use case
-        # include_fk = True  # Include foreign keys if necessary
-        exclude = ("fs_uniquifier",)  # Exclude fields as needed
+        load_instance = True
+        exclude = ("fs_uniquifier",)
 
 
 class LibrarianSchema(ma.SQLAlchemyAutoSchema):

@@ -45,31 +45,24 @@ class UserForm(FlaskForm):
     last_name = StringField("Last Name", validators=[DataRequired()])
     username = StringField("User Name", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired(), Email()])
-    type = SelectField(
-        "User Type",
-        choices=[
-            ("user", "User"),
-            ("admin", "Admin"),
-            ("librarian", "Librarian"),
-            ("member", "Member"),
-        ],
-    )
-    roles = SelectMultipleField(
-        "Roles", choices=[("1", "Admin"), ("2", "Librarian"), ("3", "Member")]
-    )
+    type = SelectField("Type", coerce=str)
+    roles = SelectMultipleField("Roles", coerce=int)
     submit = SubmitField("Submit")
 
-    
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.type.choices = [role.name for role in Role.query.all()]
+        self.roles.choices = [(str(role.id), role.name) for role in Role.query.all()]
 
+
+     
 
 class CreateUserForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    roles = SelectMultipleField('Roles', coerce=int)
+    email = StringField("Email", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    roles = SelectMultipleField("Roles", coerce=int)
     submit = SubmitField("Submit")
 
     def __init__(self, *args, **kwargs):
         super(CreateUserForm, self).__init__(*args, **kwargs)
         self.roles.choices = [(role.id, role.name) for role in Role.query.all()]
-
-

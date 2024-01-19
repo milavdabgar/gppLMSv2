@@ -44,9 +44,8 @@ def add_user():
         data = {k: v for k, v in form.data.items() if k not in ["submit", "roles"]}
         user = user_datastore.create_user(**data)
 
-        # Handle roles separately
-        role_ids = form.roles.data
-        user.roles = Role.query.filter(Role.id.in_(role_ids)).all()
+        for role in form.roles.data:
+            user.roles.append(role)
 
         # Commit the new user to the database
         db.session.add(user)
@@ -63,28 +62,12 @@ def edit_user(user_id):
     form = UserForm(obj=user)
 
     if form.validate_on_submit():
-        # Temporarily remove 'roles' field from the form
-        roles_field = form._fields.pop("roles", None)
-
-        # Use populate_obj for other fields
         form.populate_obj(user)
-
-        # Add 'roles' field back to the form
-        if roles_field:
-            form._fields["roles"] = roles_field
-
-        # Manually handle 'roles' field
-        user.roles.clear()
-        for role_id in roles_field.data:
-            role = Role.query.get(int(role_id))
-            if role:
-                user.roles.append(role)
-
         db.session.commit()
         return redirect(url_for("librarian_bp.display_users", user_id=user.id))
 
     # Pre-select the current roles in the form
-    form.roles.data = [str(role.id) for role in user.roles]
+    form.roles.data = [role for role in user.roles]
 
     return render_template("librarian/user_edit.html", form=form, user=user)
 

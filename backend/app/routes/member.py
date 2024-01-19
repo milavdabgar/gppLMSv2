@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, jsonify, url_for
 from flask_security import current_user
-from .models import db, BookLoan, user_datastore
+from ..models import db, BookLoan, user_datastore
 from datetime import datetime, timedelta
 
 member_bp = Blueprint("member_bp", __name__)

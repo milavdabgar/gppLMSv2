@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from flask_restful import Resource, Api
-from .models import (
+from app.models import (
     db,
     user_datastore,
     User,
@@ -10,7 +10,7 @@ from .models import (
     Member,
     Librarian,
 )
-from .schemas import (
+from app.schemas import (
     BookSchema,
     GenreSchema,
     AuthorSchema,

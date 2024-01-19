@@ -1,10 +1,10 @@
 from flask import Flask
 from config import LocalDevelopmentConfig
 from .extensions import db, migrate, security, bootstrap, mail, ma, babel, cors
-from .api import api_bp
-from .api_calls import api_call_bp
-from .routes_librarian import librarian_bp
-from .routes_member import member_bp
+from .apis.crud import api_bp
+from .routes.crud_api_calls import api_call_bp
+from .routes.librarian import librarian_bp
+from .routes.member import member_bp
 from .utilities.utils import initialize_db
 from .utilities.generate_dummy_data import generate_dummy_data
 # import flask_excel as excel

@@ -1,9 +1,9 @@
 from flask import Blueprint
 from flask import render_template, redirect, url_for
 from flask_security import current_user
-from .forms import UserForm, BookForm
-from .models import db, user_datastore, User, Role
-from .services import create_book, get_all_books, get_book, update_book
+from ..forms import UserForm, BookForm
+from ..models import db, user_datastore, User, Role
+from ..services import create_book, get_all_books, get_book, update_book
 
 librarian_bp = Blueprint("librarian_bp", __name__)
 

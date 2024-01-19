@@ -11,7 +11,7 @@ from wtforms import (
 )
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from wtforms.validators import DataRequired, Email
-from .models import Role
+from .models import Role, Author
 
 
 class BookForm(FlaskForm):
@@ -22,6 +22,9 @@ class BookForm(FlaskForm):
     publication_date = DateField("Publication Date")  # Use StringField for simplicity
     language = StringField("Language")
     content = TextAreaField("Content")
+    authors = QuerySelectMultipleField(
+        "Authors", query_factory=lambda: Author.query.all(), get_label="name"
+    )
     submit = SubmitField("Submit")
 
 

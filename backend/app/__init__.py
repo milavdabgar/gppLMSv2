@@ -5,12 +5,14 @@ from .apis.crud import api_bp
 from .routes.crud_api_calls import api_call_bp
 from .routes.librarian import librarian_bp
 from .routes.member import member_bp
+from .routes.auth import auth_bp
 from .utilities.utils import initialize_db
 from .utilities.generate_dummy_data import generate_dummy_data
 # import flask_excel as excel
 # from flask_sse import sse
 from .views import setup_admin
 from .models import user_datastore
+from .forms import ExtendedRegisterForm, ExtendedLoginForm
 
 
 def create_app():
@@ -25,7 +27,7 @@ def create_app():
 
     mail.init_app(app)
     bootstrap.init_app(app)
-    security.init_app(app, user_datastore)
+    security.init_app(app, user_datastore, register_form=ExtendedRegisterForm, login_form=ExtendedLoginForm)
     app.user_datastore = user_datastore
 
     # cache.init_app(app)
@@ -44,6 +46,7 @@ def create_app():
 
     # Register Blueprints
     # app.register_blueprint(user_api_bp, user_datastore=user_datastore)
+    app.register_blueprint(auth_bp)
     app.register_blueprint(api_bp)
     app.register_blueprint(api_call_bp)
     app.register_blueprint(member_bp)

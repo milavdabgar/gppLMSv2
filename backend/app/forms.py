@@ -10,8 +10,9 @@ from wtforms import (
     PasswordField,
 )
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, EqualTo
 from .models import Role, Author
+from flask_security import RegisterForm, LoginForm
 
 
 class BookForm(FlaskForm):
@@ -56,3 +57,12 @@ class UserForm(FlaskForm):
         self.type.choices = [
             (role.name.lower(), role.name) for role in Role.query.all()
         ]
+
+
+class ExtendedRegisterForm(RegisterForm):
+    first_name = StringField("First Name")
+    last_name = StringField("Last Name")
+
+
+class ExtendedLoginForm(LoginForm):
+    username = StringField("User Name", validators=[DataRequired()])

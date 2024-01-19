@@ -1,0 +1,32 @@
+<!-- books.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Browse Books</h2>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    {% for book in books %}
+    <tr>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.status }}</td>
+        <td>
+            {% if book.status == 'available' %}
+            <button onclick="requestBook({{ book.id }}, {{ member_id }})">Request</button>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<script>
+function requestBook(bookId, memberId) {
+    // JavaScript to call the API for requesting a book
+}
+</script>
+{% endblock %}

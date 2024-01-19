@@ -230,7 +230,7 @@ class BookLoan(CRUDMixin):
     returned_date = db.Column(db.DateTime)
     status = db.Column(
         db.String(20), default="issued"
-    )  # Statuses like issued, returned, overdue
+    )  # Statuses like requested, issued, overdue, returned
     fine = db.Column(db.Float, default=0.0)
     renewal_count = db.Column(db.Integer, default=0)
 

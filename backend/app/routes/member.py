@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, jsonify, url_for, redirect
 from flask_security import current_user, login_required
-from ..models import db, BookLoan, user_datastore
+from ..models import Book, db, BookLoan, user_datastore
 from datetime import datetime, timedelta
 from ..forms import RoleSelectForm
 
@@ -70,7 +70,8 @@ def return_book(book_id):
 @member_bp.route("/member/home")
 @login_required 
 def home():
-    return render_template("member/home.html")
+    books = Book.query.all()
+    return render_template("member/home.html", books=books)
 
 
 @member_bp.route('/select_role', methods=['GET', 'POST'])

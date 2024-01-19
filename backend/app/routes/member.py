@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, jsonify, url_for
-from flask_security import current_user
+from flask import Blueprint, render_template, jsonify, url_for, redirect
+from flask_security import current_user, login_required
 from ..models import db, BookLoan, user_datastore
 from datetime import datetime, timedelta
+from ..forms import RoleSelectForm
 
 member_bp = Blueprint("member_bp", __name__)
 
@@ -65,3 +66,21 @@ def return_book(book_id):
         jsonify({"message": "Book returned", "fine": loan.fine if loan.fine else 0.0}),
         200,
     )
+
+@member_bp.route("/member/home")
+@login_required 
+def home():
+    return render_template("member/home.html")
+
+
+@member_bp.route('/select_role', methods=['GET', 'POST'])
+@login_required  # Ensure only authenticated users can access this route
+def select_role():
+    form = RoleSelectForm()
+    if form.validate_on_submit():
+        selected_role = form.roles.data
+        if selected_role.name == 'Librarian':
+            return redirect(url_for('librarian_bp.home'))
+        elif selected_role.name == 'Member':
+            return redirect(url_for('member_bp.home'))
+    return render_template('member/select_role.html', form=form)

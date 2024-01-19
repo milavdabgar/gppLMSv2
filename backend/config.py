@@ -28,6 +28,7 @@ class Config:
     SECURITY_SEND_REGISTER_EMAIL = False
     SECURITY_UNAUTHORIZED_VIEW = None
     SECURITY_TOKEN_AUTHENTICATION_HEADER = None
+    SECURITY_POST_LOGIN_VIEW = "/select_role"
     WTF_CSRF_ENABLED = False
     
     # CELERY_BROKER_URL = "redis://localhost:6379/1"

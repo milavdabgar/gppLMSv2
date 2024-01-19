@@ -9,7 +9,7 @@ from wtforms import (
     TextAreaField,
     PasswordField,
 )
-from wtforms_sqlalchemy.fields import QuerySelectMultipleField
+from wtforms_sqlalchemy.fields import QuerySelectMultipleField, QuerySelectField
 from wtforms.validators import DataRequired, Email, EqualTo
 from .models import Role, Author
 from flask_security import RegisterForm, LoginForm
@@ -58,10 +58,17 @@ class UserForm(FlaskForm):
             (role.name.lower(), role.name) for role in Role.query.all()
         ]
 
+class RoleSelectForm(FlaskForm):
+    roles = QuerySelectField(
+        "Roles", query_factory=lambda: Role.query.all(), get_label="name"
+    )
+    submit = SubmitField("Submit")
+
 
 class ExtendedRegisterForm(RegisterForm):
     first_name = StringField("First Name")
     last_name = StringField("Last Name")
+    username = StringField("User Name", validators=[DataRequired()])
 
 
 class ExtendedLoginForm(LoginForm):

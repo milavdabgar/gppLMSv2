@@ -15,10 +15,8 @@ def index():
     return render_template("index.html")
 
 
-@librarian_bp.route("/home")
+@librarian_bp.route("/librarian/home")
 def home():
-    if current_user.roles in ["admin", "librarian"]:
-        return render_template("member/home.html")
     return render_template("librarian/home.html")
 
 

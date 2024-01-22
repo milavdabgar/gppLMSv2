@@ -24,7 +24,7 @@
     methods: {
       async submitRole() {
         try {
-          const response = await axios.post('http://localhost:5000/api/select_role', {
+          const response = await axios.post('http://localhost:5000/select_role', {
             role: this.selectedRole
           });
           if (response.data.redirect_url) {

@@ -20,39 +20,41 @@ def get_member_id_from_session():
 
 
 @member_bp.route("/member/home")
-@login_required
-@auth_required("token")
+@auth_required("token", "session")
 def home():
     books = Book.query.all()
     return render_template("member/home.html", books=books)
 
 
 @member_bp.route("/select_role", methods=["GET", "POST"])
-@login_required  # Ensure only authenticated users can access this route
+@auth_required("token", "session")
 def select_role():
-    form = RoleSelectForm()
-    if form.validate_on_submit():
-        selected_role = form.roles.data
-        if selected_role.name == "Librarian":
-            return redirect(url_for("librarian_bp.home"))
-        elif selected_role.name == "Member":
-            return redirect(url_for("member_bp.home"))
-    return render_template("member/select_role.html", form=form)
+    # Check if the request is an API call
+    if request.is_json:
+        data = request.json
+        selected_role = data.get("role")
 
+        if selected_role:
+            if selected_role == "Librarian":
+                return jsonify({"redirect_url": url_for("librarian_bp.home")})
+            elif selected_role == "Member":
+                return jsonify({"redirect_url": url_for("member_bp.home")})
+        
+        return jsonify({"error": "Invalid role selected"}), 400
 
-@member_bp.route("/api/select_role", methods=["POST"])
-@login_required
-def api_select_role():
-    data = request.json
-    selected_role = data.get("role")
+    # Handle regular browser request
+    else:
+        form = RoleSelectForm()
+        if form.validate_on_submit():
+            selected_role = form.roles.data
+            print(selected_role)
+            if selected_role.name == "Librarian":
+                return redirect(url_for("librarian_bp.home"))
+            elif selected_role.name == "Member":
+                return redirect(url_for("member_bp.home"))
+        
+        return render_template("member/select_role.html", form=form)
 
-    if selected_role:
-        if selected_role == "Librarian":
-            return jsonify({"redirect_url": url_for("librarian_bp.home")})
-        elif selected_role == "Member":
-            return jsonify({"redirect_url": url_for("member_bp.home")})
-    
-    return jsonify({"error": "Invalid role selected"}), 400
 
 
 

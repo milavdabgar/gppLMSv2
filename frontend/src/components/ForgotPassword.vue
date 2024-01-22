@@ -1,38 +1,42 @@
 <template>
-    <div>
-      <h1>Send password reset instructions</h1>
-      
-      <form @submit.prevent="submit">
-        <div>
-          <label>Email</label>
-          <input v-model="email" type="email">
-          <div v-if="error">{{ error }}</div>
-        </div>
-  
-        <button>Submit</button>
-      </form>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        email: '',
-        error: null
-      }
-    },
-  
-    methods: {
-      async submit() {
-        try {
-          // Call API to send reset email 
-          await this.$http.post('http://localhost:5000/reset', {email: this.email})
-        //   this.$router.push('/reset-email-sent')
-        } catch (err) {
-          this.error = err.response.data.message
-        }
+  <div>
+    <h2>Forgot Password</h2>
+    <form @submit.prevent="submitEmail">
+      <input 
+        type="email" 
+        v-model="email" 
+        placeholder="Enter your email" 
+        required
+      />
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      email: ''
+    };
+  },
+  methods: {
+    async submitEmail() {
+      try {
+        const response = await axios.post('http://localhost:5000/reset', {
+          email: this.email
+        });
+        console.log(response.data);
+        // Handle success (show message, redirect, etc.)
+        alert('Reset link sent to mail');
+        this.$router.push('/login');
+      } catch (error) {
+        console.error(error);
+        alert('Password Reset failed!');
       }
     }
   }
-  </script>
+};
+</script>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, jsonify, url_for, redirect
+from flask import Blueprint, render_template, jsonify, url_for, redirect, request
 from flask_security import current_user, login_required, auth_required
 from ..models import Book, db, BookLoan, user_datastore
 from datetime import datetime, timedelta
@@ -38,6 +38,22 @@ def select_role():
         elif selected_role.name == "Member":
             return redirect(url_for("member_bp.home"))
     return render_template("member/select_role.html", form=form)
+
+
+@member_bp.route("/api/select_role", methods=["POST"])
+@login_required
+def api_select_role():
+    data = request.json
+    selected_role = data.get("role")
+
+    if selected_role:
+        if selected_role == "Librarian":
+            return jsonify({"redirect_url": url_for("librarian_bp.home")})
+        elif selected_role == "Member":
+            return jsonify({"redirect_url": url_for("member_bp.home")})
+    
+    return jsonify({"error": "Invalid role selected"}), 400
+
 
 
 def request_book(book_id, member_id):

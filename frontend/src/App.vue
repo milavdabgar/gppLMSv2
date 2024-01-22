@@ -3,11 +3,8 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
-      <router-link to="/books">Books</router-link> |
-      <router-link to="/genres">Genres</router-link> |
-      <router-link to="/authors">Authors</router-link> | 
-      <router-link to="/browse-books">BrowseBooks</router-link> | 
-      <router-link to="/browse-genres">BrowseGenres</router-link>
+      <router-link to="/librarian/home">LibrarianDashboard</router-link> |
+      <router-link to="/member/home">MemberDashboard</router-link>
     </nav>
     <nav>
       <router-link to="/register">Register</router-link> |  

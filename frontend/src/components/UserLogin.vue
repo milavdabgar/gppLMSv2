@@ -26,6 +26,9 @@
     <p>
       Forgot password? <router-link to="/reset">Reset</router-link>
     </p>
+    <p>
+      Change password: <router-link to="/change">Change</router-link>
+    </p>
 
     <button @click="fetchProtectedData">Fetch Protected Data</button>
   </div>
@@ -55,7 +58,7 @@ export default {
         localStorage.setItem('authToken', response.data.response.user.authentication_token);
         axios.defaults.headers.common['Authentication-Token'] = localStorage.authToken
         alert('Login Successful!');
-        this.$router.push('/dashboard');
+        this.$router.push('/select_role');
       } catch (error) {
         console.error('Login error:', error);
         alert('Login failed!');

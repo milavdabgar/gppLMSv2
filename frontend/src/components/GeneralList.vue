@@ -56,6 +56,8 @@ export default {
                 this.fetchAuthors()
             } else if (this.resourceType === 'genres') {
                 this.fetchGenres()
+            } else if (this.resourceType === 'users') {
+                this.fetchUsers()
             }
         },
 
@@ -101,6 +103,21 @@ export default {
 
                     this.items = genres
                     this.title = 'Genres'
+                })
+        },
+
+        fetchUsers() {
+            axios.get('http://localhost:5000/api/users')
+                .then(res => {
+                    let users = res.data.map(user => {
+                        return {
+                            id: user.id,
+                            displayText: user.email
+                        }
+                    })
+
+                    this.items = users
+                    this.title = 'Users'
                 })
         }
     }

@@ -30,6 +30,7 @@ class Config:
     SECURITY_TOKEN_AUTHENTICATION_HEADER = None
     SECURITY_POST_LOGIN_VIEW = "/select_role"
     WTF_CSRF_ENABLED = False
+    # SECURITY_TOKEN_AUTHENTICATION_HEADER = 'Authorization'
     
     # CELERY_BROKER_URL = "redis://localhost:6379/1"
     # CELERY_RESULT_BACKEND = "redis://localhost:6379/2"

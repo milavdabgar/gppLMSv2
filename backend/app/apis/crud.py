@@ -18,6 +18,7 @@ from app.schemas import (
     MemberSchema,
     LibrarianSchema,
 )
+from flask_security import auth_required
 
 
 api_bp = Blueprint("api_bp", __name__)
@@ -28,7 +29,6 @@ api = Api(api_bp)
 class BaseApi(Resource):
     model = None
     schema = None
-
     def get(self, id=None):
         if id:
             obj = self.model.query.get_or_404(id)

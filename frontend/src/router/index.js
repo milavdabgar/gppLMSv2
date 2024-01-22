@@ -5,6 +5,7 @@ import GeneralList from "@/components/GeneralList.vue";
 import GeneralEdit from "@/components/GeneralEdit.vue";
 import UserLogin from '@/components/UserLogin.vue';
 import UserRegistration from '@/components/UserRegistration.vue';
+import ForgotPassword from '@/components/ForgotPassword.vue';
 import BrowseBooks from '@/components/BrowseBooks.vue';
 import BrowseGenres from '@/components/BrowseGenres.vue';
 
@@ -32,6 +33,11 @@ const routes = [
     path: '/register',
     name: 'UserRegister',
     component: UserRegistration
+  },
+  {
+    path: '/reset',
+    name: 'ForgotPassword',
+    component: ForgotPassword
   },
 
   {

@@ -4,11 +4,6 @@
     <form @submit.prevent="login">
 
       <div>
-        <label for="username">User Name:</label>
-        <input type="username" id="username" v-model="credentials.username" required>
-      </div>
-
-      <div>
         <label for="email">Email:</label>
         <input type="email" id="email" v-model="credentials.email" required>
       </div>
@@ -28,6 +23,9 @@
     <p>
       Don't have an account? <router-link to="/register">Register</router-link>
     </p>
+    <p>
+      Forgot password? <router-link to="/reset">Reset</router-link>
+    </p>
 
     <button @click="fetchProtectedData">Fetch Protected Data</button>
   </div>
@@ -40,7 +38,6 @@ export default {
   data() {
     return {
       credentials: {
-        username: '',
         email: '',
         password: '',
         remember: false
@@ -55,7 +52,8 @@ export default {
             include_auth_token: true
           }
         });
-        localStorage.setItem('authToken', response.data.authentication_token);
+        localStorage.setItem('authToken', response.data.response.user.authentication_token);
+        axios.defaults.headers.common['Authentication-Token'] = localStorage.authToken
         alert('Login Successful!');
         this.$router.push('/dashboard');
       } catch (error) {
@@ -65,9 +63,9 @@ export default {
     },
     async fetchProtectedData() {
       try {
-        const response = await axios.get('http://localhost:5000//member/home', {
+        const response = await axios.get('http://localhost:5000/hello', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            'Authentication-Token': localStorage.getItem('authToken')
           }
         });
         console.log('Protected data:', response.data);
@@ -76,6 +74,12 @@ export default {
         console.error('Error fetching protected data:', error);
         alert('Failed to fetch protected data!');
       }
+
+      // Protected API request  
+      axios.get('http://localhost:5000/hello')
+        .then(response => {
+          console.log(response.data)
+        })
     }
   }
 };

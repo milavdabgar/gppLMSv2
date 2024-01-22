@@ -1,5 +1,3 @@
-// src/components/Registration.vue
-
 <template>
   <div>
     <h1>Register</h1>
@@ -26,10 +24,13 @@ export default {
           email: this.email,
           password: this.password
         });
-        console.log(response.data);
-        // Handle post-registration logic (e.g., redirect to login page)
+        localStorage.setItem('authToken', response.data.response.user.authentication_token);
+        axios.defaults.headers.common['Authentication-Token'] = localStorage.authToken
+        alert('Registration Successful!');
+        this.$router.push('/dashboard');
       } catch (error) {
         console.error(error);
+        alert('Registration failed!');
       }
     }
   }

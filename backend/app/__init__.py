@@ -12,7 +12,7 @@ from .utilities.generate_dummy_data import generate_dummy_data
 # from flask_sse import sse
 from .views import setup_admin
 from .models import user_datastore
-from .forms import ExtendedRegisterForm, ExtendedLoginForm
+from .forms import ExtendedRegisterForm
 
 
 def create_app():
@@ -27,7 +27,7 @@ def create_app():
 
     mail.init_app(app)
     bootstrap.init_app(app)
-    security.init_app(app, user_datastore, register_form=ExtendedRegisterForm, login_form=ExtendedLoginForm)
+    security.init_app(app, user_datastore, register_form=ExtendedRegisterForm)
     app.user_datastore = user_datastore
 
     # cache.init_app(app)
@@ -55,5 +55,6 @@ def create_app():
 
     # # This is for streaming
     # app.register_blueprint(sse, url_prefix="/stream")
+    # cors.init_app(app)
 
     return app

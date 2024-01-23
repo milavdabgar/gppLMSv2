@@ -129,7 +129,6 @@ class Member(User):
     __mapper_args__ = {"polymorphic_identity": "member"}
     id = db.Column(db.Integer, db.ForeignKey("user.id"), primary_key=True)
     membership_id = db.Column(db.Integer, db.ForeignKey("membership.id"))
-    preferred_genres = db.Column(db.String(255))  # Store comma-separated genre IDs
     language_preference = db.Column(db.String(50))
     # Relationships
     reading_history = db.relationship(
@@ -140,6 +139,7 @@ class Member(User):
     wishlists = db.relationship("Wishlist", backref="member", lazy="dynamic")
     collections = db.relationship("Collection", backref="member", lazy="dynamic")
     reviews = db.relationship("Review", backref="member", lazy="dynamic")
+    preferred_genres = db.relationship("Genre", backref="member", lazy="dynamic")
 
 
 class Membership(CRUDMixin):
@@ -167,6 +167,7 @@ class Genre(CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True)
     description = db.Column(db.Text)
+    member_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
 
 class Author(CRUDMixin):
@@ -212,11 +213,11 @@ class BookLoan(CRUDMixin):
     id = db.Column(db.Integer, primary_key=True)
     book_id = db.Column(db.Integer, db.ForeignKey("book.id"), nullable=False)
     member_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    loan_date = db.Column(db.DateTime, default=datetime.utcnow)
+    loan_date = db.Column(db.Date, default=datetime.utcnow().date())
     due_date = db.Column(
-        db.DateTime, default=lambda: datetime.utcnow() + timedelta(days=14)
+        db.Date, default=lambda: datetime.utcnow().date() + timedelta(days=14)
     )
-    returned_date = db.Column(db.DateTime)
+    returned_date = db.Column(db.Date)
     status = db.Column(
         db.String(20), default="issued"
     )  # Statuses like requested, issued, overdue, returned

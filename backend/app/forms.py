@@ -11,7 +11,7 @@ from wtforms import (
 )
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField, QuerySelectField
 from wtforms.validators import DataRequired, Email, EqualTo
-from .models import Role, Author, Book, Member, User
+from .models import Role, Author, Book, Member, User, Genre, db
 from flask_security import RegisterForm
 
 
@@ -58,6 +58,22 @@ class UserForm(FlaskForm):
             (role.name.lower(), role.name) for role in Role.query.all()
         ]
 
+class MemberForm(UserForm):
+    preferred_genres = QuerySelectMultipleField(
+        "Genre", query_factory=lambda: Genre.query.all(), get_label="name"
+    )
+    language_preference = StringField("Preferred Languages")
+    # language_preference = SelectMultipleField(
+    #     'Preferred Languages', 
+    #     choices=[
+    #         ('english', 'English'),
+    #         ('hindi', 'Hindi'),
+    #         ('gujarati', 'Gujarati'),
+    #         ('others', 'Others')
+    #     ],
+    #     validators=[DataRequired()]
+    # )
+
 class RoleSelectForm(FlaskForm):
     roles = QuerySelectField(
         "Roles", query_factory=lambda: Role.query.all(), get_label="name"
@@ -71,9 +87,12 @@ class ExtendedRegisterForm(RegisterForm):
     username = StringField("User Name", validators=[DataRequired()])
 
 
+
 class BookLoanForm(FlaskForm):
     book_id = QuerySelectField("Book", query_factory=lambda: Book.query.all(), get_label="title")
     member_id = QuerySelectField("Member", query_factory=lambda: Member.query.all(), get_label="email")
+    # book_id = SelectField("Book", coerce=str) 
+    # member_id = SelectField("Member", coerce=str)
     loan_date = DateField('Loan Date', validators=[DataRequired()])
     returned_date = DateField('Returned Date')
     status = SelectField(
@@ -88,3 +107,12 @@ class BookLoanForm(FlaskForm):
         validators=[DataRequired()]
     )
     submit = SubmitField("Submit")
+
+    # def __init__(self, *args, **kwargs):    
+    #     super(BookLoanForm, self).__init__(*args, **kwargs)
+    #     self.book_id.choices = [
+    #         (book.id, book.title) for book in Book.query.all()
+    #     ]
+    #     self.member_id.choices = [
+    #         (member.id, member.email) for member in Member.query.all()
+    #     ]

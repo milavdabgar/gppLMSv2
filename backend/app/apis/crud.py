@@ -9,6 +9,7 @@ from app.models import (
     Author,
     Member,
     Librarian,
+    BookLoan
 )
 from app.schemas import (
     BookSchema,
@@ -17,6 +18,7 @@ from app.schemas import (
     UserSchema,
     MemberSchema,
     LibrarianSchema,
+    BookLoanSchema
 )
 from flask_security import auth_required
 
@@ -93,6 +95,10 @@ class AuthorApi(BaseApi):
     model = Author
     schema = AuthorSchema()
 
+class BookLoanApi(BaseApi):
+    model = BookLoan
+    schema = BookLoanSchema()    
+
 
 def add_resource_routes(api, resource_api_class, endpoint_name, id_type="int"):
     api.add_resource(
@@ -112,3 +118,4 @@ add_resource_routes(api, AuthorApi, "authors")
 add_resource_routes(api, UserApi, "users")
 add_resource_routes(api, MemberApi, "members")
 add_resource_routes(api, LibrarianApi, "librarians")
+add_resource_routes(api, BookLoanApi, "bookloans")

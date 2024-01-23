@@ -14,7 +14,6 @@ from .models import (
     Genre,
     Author,
     Book,
-    Transaction,
     BookLoan,
     Purchase,
     Review
@@ -76,7 +75,6 @@ def setup_admin(app):
     admin.add_view(MyModelView(Genre, db.session, category="BookData"))
     admin.add_view(MyModelView(Author, db.session, category="BookData"))
     admin.add_view(MyModelView(Book, db.session, category="BookData"))
-    admin.add_view(MyModelView(Transaction, db.session, category="Transaction"))
     admin.add_view(MyModelView(BookLoan, db.session, category="Transaction"))
     admin.add_view(MyModelView(Purchase, db.session, category="Transaction"))
     admin.add_view(MyModelView(Review, db.session, category="BookData"))

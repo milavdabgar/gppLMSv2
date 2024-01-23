@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for
-from ..forms import BookForm, GenreForm, AuthorForm, UserForm
-from ..schemas import book_schema, genre_schema, author_schema, user_schema
+from ..forms import BookForm, GenreForm, AuthorForm, UserForm, BookLoanForm
+from ..schemas import book_schema, genre_schema, author_schema, user_schema, book_loan_schema
 import requests
 
 api_call_bp = Blueprint("api_call_bp", __name__)
@@ -205,6 +205,41 @@ def edit_user(id):
         redirect_endpoint="api_call_bp.user_list",
         list_title=None,
         edit_title="Edit User",
+        edit_route=None,
+        id=id,
+        display_fields=display_fields,
+    )
+
+
+
+@api_call_bp.route("/bookloans", methods=["GET", "POST"])
+def bookloan_list():
+    display_fields = [("email", "first_name")]
+    return handle_form_submission(
+        form_class=BookLoanForm,
+        schema=book_loan_schema,
+        endpoint="bookloans",
+        template="librarian/list.html",
+        redirect_endpoint="api_call_bp.bookloan_list",
+        list_title="BookLoan List",
+        edit_title="Edit BookLoan",
+        edit_route="api_call_bp.edit_bookloan",
+        display_fields=display_fields,
+    )
+
+
+# Edit BookLoan function
+@api_call_bp.route("/bookloans/<int:id>", methods=["GET", "POST"])
+def edit_bookloan(id):
+    display_fields = [("email", "first_name")]
+    return handle_form_submission(
+        form_class=BookLoanForm,
+        schema=book_loan_schema,
+        endpoint="bookloans",
+        template="librarian/edit.html",
+        redirect_endpoint="api_call_bp.bookloan_list",
+        list_title=None,
+        edit_title="Edit BookLoan",
         edit_route=None,
         id=id,
         display_fields=display_fields,

@@ -8,10 +8,6 @@ from .crud_api_calls import api_call
 member_bp = Blueprint("member_bp", __name__)
 
 
-def calculate_fine(days_late):
-    fine_per_day = 1.00  # Assuming a fine of $1 per day
-    return days_late * fine_per_day
-
 
 def get_member_id_from_session():
     if not current_user.is_authenticated:

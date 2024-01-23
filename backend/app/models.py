@@ -135,7 +135,6 @@ class Member(User):
     reading_history = db.relationship(
         "Book", secondary=member_books, backref="member", lazy="dynamic"
     )
-    transactions = db.relationship("Transaction", backref="member", lazy="dynamic")
     book_loans = db.relationship("BookLoan", backref="member", lazy="dynamic")
     purchases = db.relationship("Purchase", backref="member", lazy="dynamic")
     wishlists = db.relationship("Wishlist", backref="member", lazy="dynamic")
@@ -204,19 +203,9 @@ class Book(CRUDMixin):
         "Membership", secondary=membership_books, backref="book", lazy="dynamic"
     )
     # Relationships: One to Many
-    transactions = db.relationship("Transaction", backref="book", lazy="dynamic")
     book_loans = db.relationship("BookLoan", backref="book", lazy="dynamic")
     purchases = db.relationship("Purchase", backref="book", lazy="dynamic")
     reviews = db.relationship("Review", backref="book", lazy="dynamic")
-
-
-class Transaction(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    member_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
-    book_id = db.Column(db.Integer, db.ForeignKey("book.id"), nullable=False)
-    type = db.Column(db.String(20))  # 'Loan', 'purchase' etc.
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-    status = db.Column(db.String(20))  # 'active', 'completed'
 
 
 class BookLoan(CRUDMixin):
@@ -231,8 +220,6 @@ class BookLoan(CRUDMixin):
     status = db.Column(
         db.String(20), default="issued"
     )  # Statuses like requested, issued, overdue, returned
-    fine = db.Column(db.Float, default=0.0)
-    renewal_count = db.Column(db.Integer, default=0)
 
 
 class Purchase(db.Model):

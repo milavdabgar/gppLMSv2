@@ -12,7 +12,6 @@ from .models import (
     Genre,
     Author,
     Book,
-    Transaction,
     BookLoan,
     Purchase,
     Review,
@@ -83,12 +82,6 @@ class AuthorSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         sqla_session = db.session
 
-class TransactionSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Transaction
-        load_instance = True
-        sqla_session = db.session
-
 class BookLoanSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = BookLoan
@@ -113,7 +106,6 @@ class BookSchema(ma.SQLAlchemyAutoSchema):
     collections = ma.Nested(CollectionSchema, many=True)
     wishlists = ma.Nested(WishlistSchema, many=True)
     free_access_in_memberships = ma.Nested(MembershipSchema, many=True)
-    transactions = ma.Nested(TransactionSchema, many=True)
     book_loans = ma.Nested(BookLoanSchema, many=True)
     purchases = ma.Nested(PurchaseSchema, many=True)
     reviews = ma.Nested(ReviewSchema, many=True)
@@ -152,9 +144,6 @@ authors_schema = AuthorSchema(many=True)
 
 book_schema = BookSchema()
 books_schema = BookSchema(many=True)
-
-transaction_schema = TransactionSchema()
-transactions_schema = TransactionSchema(many=True)
 
 book_loan_schema = BookLoanSchema()
 book_loans_schema = BookLoanSchema(many=True)

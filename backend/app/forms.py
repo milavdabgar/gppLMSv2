@@ -11,7 +11,7 @@ from wtforms import (
 )
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField, QuerySelectField
 from wtforms.validators import DataRequired, Email, EqualTo
-from .models import Role, Author
+from .models import Role, Author, Book, Member, User
 from flask_security import RegisterForm
 
 
@@ -69,3 +69,22 @@ class ExtendedRegisterForm(RegisterForm):
     first_name = StringField("First Name")
     last_name = StringField("Last Name")
     username = StringField("User Name", validators=[DataRequired()])
+
+
+class BookLoanForm(FlaskForm):
+    book_id = QuerySelectField("Book", query_factory=lambda: Book.query.all(), get_label="title")
+    member_id = QuerySelectField("Member", query_factory=lambda: Member.query.all(), get_label="email")
+    loan_date = DateField('Loan Date', validators=[DataRequired()])
+    returned_date = DateField('Returned Date')
+    status = SelectField(
+        'Status', 
+        choices=[
+            ('requested', 'Requested'),
+            ('approved', 'Approved'),
+            ('active', 'Active'),
+            ('overdue', 'Overdue'),
+            ('returned', 'Returned')
+        ],
+        validators=[DataRequired()]
+    )
+    submit = SubmitField("Submit")

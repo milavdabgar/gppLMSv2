@@ -1,18 +1,16 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <!-- Home view content -->
+    <book-loan-request-component />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import BookLoanRequestComponent from '@/components/BookLoanRequestComponent';
 
 export default {
-  name: 'HomeView',
   components: {
-    HelloWorld
+    BookLoanRequestComponent
   }
-}
+};
 </script>

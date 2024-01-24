@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Login</h2>
-    <form @submit.prevent="login">
+    <form @submit.prevent="submitLogin">
 
       <div>
         <label for="email">Email:</label>
@@ -29,62 +29,27 @@
     <p>
       Change password: <router-link to="/change">Change</router-link>
     </p>
-
-    <button @click="fetchProtectedData">Fetch Protected Data</button>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   data() {
     return {
-      credentials: {
-        email: '',
-        password: '',
-        remember: false
-      }
+      credentials: { email: '', password: '', remember: false }
     };
   },
   methods: {
-    async login() {
+    async submitLogin() {
       try {
-        const response = await axios.post('http://localhost:5000/login', this.credentials, {
-          params: {
-            include_auth_token: true
-          }
-        });
-        localStorage.setItem('authToken', response.data.response.user.authentication_token);
-        axios.defaults.headers.common['Authentication-Token'] = localStorage.authToken
-        alert('Login Successful!');
+        await this.$store.dispatch('login', this.credentials);
         this.$router.push('/select_role');
       } catch (error) {
-        console.error('Login error:', error);
-        alert('Login failed!');
+        console.log(error);
       }
-    },
-    async fetchProtectedData() {
-      try {
-        const response = await axios.get('http://localhost:5000/hello', {
-          headers: {
-            'Authentication-Token': localStorage.getItem('authToken')
-          }
-        });
-        console.log('Protected data:', response.data);
-        alert('Protected data fetched successfully!');
-      } catch (error) {
-        console.error('Error fetching protected data:', error);
-        alert('Failed to fetch protected data!');
-      }
-
-      // Protected API request  
-      axios.get('http://localhost:5000/hello')
-        .then(response => {
-          console.log(response.data)
-        })
     }
   }
 };
 </script>
+
 

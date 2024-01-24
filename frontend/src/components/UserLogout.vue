@@ -1,24 +1,20 @@
 <template>
-    <div>
-      <button @click="logout">Logout</button>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    methods: {
-      logout() {
-        // Remove the token from local storage
-        localStorage.removeItem('authToken');
-  
-        // Redirect the user to the login page or home page
+  <div>
+    <button @click="submitLogout">Logout</button>
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    async submitLogout() {
+      try {
+        await this.$store.dispatch('logout');
         this.$router.push('/login');
+      } catch (error) {
+        console.log(error)  
       }
-    },
-    mounted() {
-      // Automatically call logout when the component is mounted
-      this.logout();
     }
-  };
-  </script>
-  
+  }
+};
+</script>

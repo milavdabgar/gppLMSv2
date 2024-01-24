@@ -1,36 +1,44 @@
 <template>
   <div>
     <h1>Register</h1>
-    <input v-model="email" type="email" placeholder="Email" />
-    <input v-model="password" type="password" placeholder="Password" />
-    <button @click="register">Register</button>
+    <form @submit.prevent="submitRegister">
+
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" v-model="credentials.email" required>
+      </div>
+
+      <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" v-model="credentials.password" required>
+      </div>
+
+      <button type="submit">Register</button>
+    </form>
+
+    <p>
+      Already have an account? <router-link to="/login">Login</router-link>
+    </p>
+
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+
 
 export default {
   data() {
     return {
-      email: '',
-      password: ''
+      credentials: { email: '', password: '' }
     };
   },
   methods: {
-    async register() {
+    async submitRegister() {
       try {
-        const response = await axios.post('http://localhost:5000/register', {
-          email: this.email,
-          password: this.password
-        });
-        localStorage.setItem('authToken', response.data.response.user.authentication_token);
-        axios.defaults.headers.common['Authentication-Token'] = localStorage.authToken
-        alert('Registration Successful!');
-        this.$router.push('/dashboard');
+        await this.$store.dispatch('register', this.credentials);
+        this.$router.push('/select_role');
       } catch (error) {
         console.error(error);
-        alert('Registration failed!');
       }
     }
   }

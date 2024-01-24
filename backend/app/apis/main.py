@@ -1,14 +1,16 @@
 from flask import Blueprint, jsonify, request, url_for
-from flask_security import auth_required
+from flask_login import current_user
+from flask_security import auth_required, login_required
 from datetime import datetime
 from ..models import db, BookLoan
-from ..schemas import book_loan_schema, book_loans_schema
+from ..schemas import book_loan_schema, book_loans_schema, user_schema
 
 api_bp = Blueprint("api_bp", __name__)
 
 
 @api_bp.route("/api/select_role", methods=["GET", "POST"])
-@auth_required("token", "session")
+# @auth_required("token", "session")
+@login_required
 def select_role():
     data = request.json
     selected_role = data.get("role")
@@ -53,3 +55,9 @@ def return_loan(loan_id):
     loan.status = "returned"
     db.session.commit()
     return book_loan_schema.jsonify(loan)
+
+
+@api_bp.route('/api/current_user', methods=['GET'])
+@login_required
+def get_current_user():
+    return user_schema.jsonify(current_user)

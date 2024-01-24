@@ -14,6 +14,7 @@
   
   <script>
   import axios from 'axios';
+  // import axiosInstance from '@/axiosConfig';
   
   export default {
     data() {

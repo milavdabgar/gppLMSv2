@@ -20,13 +20,14 @@ from app.schemas import (
     LibrarianSchema,
     BookLoanSchema
 )
-
+# from flask_security import login_required
 
 crud_api_bp = Blueprint("crud_api_bp", __name__)
 crud_api = Api(crud_api_bp)
 
 
 # Base API class
+
 class BaseApi(Resource):
     model = None
     schema = None

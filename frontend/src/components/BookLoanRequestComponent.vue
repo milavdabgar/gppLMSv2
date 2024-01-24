@@ -42,9 +42,11 @@ export default {
     async requestLoan() {
       try {
         const loan = {
-          bookId: this.selectedBookId,
-          memberId: this.$store.state.user.id
+          book_id: this.selectedBookId,
+          member_id: this.$store.state.user.id,
+          status: 'requested'
         };
+        console.log(loan)
         await BookLoanService.createLoan(loan);
         this.$emit('loanCreated');
         this.selectedBookId = null;

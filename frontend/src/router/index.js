@@ -5,8 +5,9 @@ import LibrarianDashboard from "@/components/LibrarianDashboard.vue";
 import MemberDashboard from "@/components/MemberDashboard.vue";
 import GeneralList from "@/components/GeneralList.vue";
 import GeneralEdit from "@/components/GeneralEdit.vue";
-import UserLogin from '@/components/UserLogin.vue';
 import UserRegistration from '@/components/UserRegistration.vue';
+import UserLogin from '@/components/UserLogin.vue';
+import UserLogout from '../components/UserLogout.vue';
 import ForgotPassword from '@/components/ForgotPassword.vue';
 import ChangePassword from '@/components/ChangePassword.vue';
 import SelectRole from '@/components/SelectRole.vue';
@@ -32,6 +33,11 @@ const routes = [
     path: '/login',
     name: 'UserLogin',
     component: UserLogin
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: UserLogout
   },
   {
     path: '/register',

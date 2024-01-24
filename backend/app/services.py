@@ -1,5 +1,6 @@
 from .models import db, Book, Genre
 
+
 def create_book(data):
     Book.create(**data)
 
@@ -18,3 +19,5 @@ def delete_book(book_id):
     book = Book.query.get(book_id)
     if book:
         book.delete()
+
+      

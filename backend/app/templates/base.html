@@ -23,7 +23,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 {% if current_user.is_anonymous %}
-                    <a class="navbar-brand" href="{{ url_for("librarian_bp.index") }}">GPP Portal</a>
+                    <a class="navbar-brand" href="{{ url_for("main_bp.index") }}">GPP Portal</a>
                 {% else %}
                     <a class="navbar-brand" href="{{ url_for("librarian_bp.home") }}">GPP Portal Home</a>
                 {% endif %}

@@ -20,11 +20,10 @@ from app.schemas import (
     LibrarianSchema,
     BookLoanSchema
 )
-from flask_security import auth_required
 
 
-api_bp = Blueprint("api_bp", __name__)
-api = Api(api_bp)
+crud_api_bp = Blueprint("crud_api_bp", __name__)
+crud_api = Api(crud_api_bp)
 
 
 # Base API class
@@ -112,10 +111,10 @@ def add_resource_routes(api, resource_api_class, endpoint_name, id_type="int"):
 
 
 # Add routes for BookApi, GenreApi, AuthorApi, etc.
-add_resource_routes(api, BookApi, "books")
-add_resource_routes(api, GenreApi, "genres")
-add_resource_routes(api, AuthorApi, "authors")
-add_resource_routes(api, UserApi, "users")
-add_resource_routes(api, MemberApi, "members")
-add_resource_routes(api, LibrarianApi, "librarians")
-add_resource_routes(api, BookLoanApi, "bookloans")
+add_resource_routes(crud_api, BookApi, "books")
+add_resource_routes(crud_api, GenreApi, "genres")
+add_resource_routes(crud_api, AuthorApi, "authors")
+add_resource_routes(crud_api, UserApi, "users")
+add_resource_routes(crud_api, MemberApi, "members")
+add_resource_routes(crud_api, LibrarianApi, "librarians")
+add_resource_routes(crud_api, BookLoanApi, "bookloans")

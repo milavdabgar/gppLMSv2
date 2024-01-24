@@ -1,8 +1,10 @@
 from flask import Flask
 from config import LocalDevelopmentConfig
 from .extensions import db, migrate, security, bootstrap, mail, ma, babel, cors
-from .apis.crud import api_bp
+from .apis.crud import crud_api_bp
+from .apis.main import api_bp
 from .routes.crud_api_calls import api_call_bp
+from .routes.main import main_bp
 from .routes.librarian import librarian_bp
 from .routes.member import member_bp
 from .routes.auth import auth_bp
@@ -46,10 +48,12 @@ def create_app():
 
     # Register Blueprints
     # app.register_blueprint(user_api_bp, user_datastore=user_datastore)
+    app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
-    app.register_blueprint(api_bp)
+    app.register_blueprint(crud_api_bp)
     app.register_blueprint(api_call_bp)
     app.register_blueprint(member_bp)
+    app.register_blueprint(api_bp)
     app.register_blueprint(librarian_bp)
     # app.register_blueprint(main_bp)
 

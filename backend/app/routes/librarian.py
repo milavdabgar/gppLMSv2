@@ -8,13 +8,6 @@ from ..services import create_book, get_all_books, get_book, update_book
 librarian_bp = Blueprint("librarian_bp", __name__)
 
 
-@librarian_bp.route("/")
-def index():
-    # if not current_user.is_authenticated:
-    #     return url_for("security.login")
-    return render_template("index.html")
-
-
 @librarian_bp.route("/librarian/home")
 def home():
     return render_template("librarian/home.html")

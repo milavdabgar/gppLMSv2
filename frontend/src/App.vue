@@ -3,6 +3,8 @@
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
+      <router-link to="//member/loans">MyLoansView</router-link> |
+      <router-link to="/librarian/dashboard">LibrarianDashboardView</router-link> |
       <router-link to="/librarian/home">LibrarianDashboard</router-link> |
       <router-link to="/member/home">MemberDashboard</router-link>
     </nav>

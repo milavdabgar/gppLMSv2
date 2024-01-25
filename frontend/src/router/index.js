@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import MyLoansView from "@/views/MyLoansView.vue"
+import LibrarianDashboardView from "@/views/LibrarianDashboardView.vue";
 import LibrarianDashboard from "@/components/LibrarianDashboard.vue";
 import MemberDashboard from "@/components/MemberDashboard.vue";
 import GeneralList from "@/components/GeneralList.vue";
@@ -21,6 +23,16 @@ const routes = [
     path: "/",
     name: "home",
     component: HomeView,
+  },
+  {
+    path: "/member/loans",
+    name: "MyLoansView",
+    component: MyLoansView,
+  },
+  {
+    path: "/librarian/dashboard",
+    name: "LibrarianDashboardView",
+    component: LibrarianDashboardView,
   },
   {
     path: "/about",

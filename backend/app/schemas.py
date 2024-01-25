@@ -83,7 +83,7 @@ class AuthorSchema(ma.SQLAlchemyAutoSchema):
         sqla_session = db.session
 
 class BookLoanSchema(ma.SQLAlchemyAutoSchema):
-    # book_id = ma.Nested("BookSchema", only=["id", "title"])
+    # books = ma.Nested("BookSchema", only=["id", "title"])
     # member_id = ma.Nested("MemberSchema", only=["id", "email"])
     class Meta:
         model = BookLoan

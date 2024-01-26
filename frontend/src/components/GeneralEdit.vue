@@ -29,14 +29,11 @@ export default {
   },
   methods: {
     fetchData() {
-      // Example: Fetch data based on type and id
-      // Replace with actual API call
       axios.get(`http://localhost:5000/api/${this.type.toLowerCase()}s/${this.id}`).then(response => {
         this.formData = response.data;
       });
     },
     submitForm() {
-      // Implement the API call to update the data
       axios.put(`http://localhost:5000/api/${this.type.toLowerCase()}s/${this.id}`, this.formData)
         .then(() => {
           this.$router.push(`/${this.type.toLowerCase()}s`);

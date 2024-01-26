@@ -37,8 +37,6 @@ export default {
         this.fetchData()
     },
 
-    // GeneralList.vue
-
     watch: {
         '$route.params': {
             handler() {

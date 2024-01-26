@@ -43,7 +43,7 @@ export default {
     async submitLogin() {
       try {
         await this.$store.dispatch('login', this.credentials);
-        this.$router.push('/select_role');
+        this.$router.push('/select-role');
       } catch (error) {
         console.log(error);
       }

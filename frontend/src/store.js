@@ -18,9 +18,19 @@ export default new Vuex.Store({
         SET_USER(state, user) {
             state.user = user;
         },
+        SET_USER_ROLE(state, role) {
+            if (state.user) {
+                state.user.role = role;
+            }
+        },
         CLEAR_USER(state) {
             state.user = null;
-        }
+        },
+        CLEAR_USER_ROLE(state, role) {
+            if (state.user) {
+                state.user.role = role;
+            }
+        },
     },
     actions: {
         async register({ dispatch }, credentials) {
@@ -69,6 +79,7 @@ export default new Vuex.Store({
                 localStorage.removeItem('authToken');
                 axios.defaults.headers.common['Authentication-Token'] = ''; // Reset the Axios header
                 commit('CLEAR_USER');
+                commit('CLEAR_USER_ROLE');
             } catch (error) {
                 console.error('Logout failed:', error);
             }

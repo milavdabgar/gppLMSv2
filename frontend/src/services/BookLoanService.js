@@ -25,7 +25,6 @@ export default {
   */
   async getLoans(params = {}) {
     const response = await axios.get(API_URL, { params });
-    console.log(response);
     return response.data;
   },
 

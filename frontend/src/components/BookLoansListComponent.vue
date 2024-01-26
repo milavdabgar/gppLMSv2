@@ -1,5 +1,3 @@
-// BookLoansListComponent
-
 <template>
   <div class="book-loan-lists">
     <h2>Book Loans</h2>
@@ -74,12 +72,11 @@ export default {
 
     async returnLoan(loan) {
       const updatedLoanData = {
-        book_id: loan.book_id, // Include the original book_id
-        member_id: loan.member_id, // Include the original member_id
+        book_id: loan.book_id,
+        member_id: loan.member_id,
         status: "returned",
-        returned_date: new Date().toISOString().split("T")[0], // Formats current date to YYYY-MM-DD
+        returned_date: new Date().toISOString().split("T")[0],
       };
-      console.log(loan.id);
       await BookLoanService.updateLoan(loan.id, updatedLoanData);
       this.fetchLoans(); // Refresh the list of loans
     },

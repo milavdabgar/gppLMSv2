@@ -46,9 +46,7 @@ export default {
           member_id: this.$store.state.user.id,
           status: 'requested'
         };
-        console.log(loan)
         await BookLoanService.createLoan(loan);
-        this.$emit('loanCreated');
         this.selectedBookId = null;
       } catch (error) {
         console.error(error);

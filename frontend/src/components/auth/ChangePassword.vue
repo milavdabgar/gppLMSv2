@@ -50,13 +50,9 @@ export default {
           }
         });
         console.log(response.data);
-        // Handle success (show message, redirect, etc.)
-        alert('Password Changed.');
         this.$router.push('/login');
       } catch (error) {
         console.error(error);
-        // Handle error (show error message, etc.)
-        alert('Password Change failed.');
       }
     }
   }

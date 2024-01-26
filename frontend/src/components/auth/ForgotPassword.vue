@@ -2,12 +2,7 @@
   <div>
     <h2>Forgot Password</h2>
     <form @submit.prevent="submitEmail">
-      <input 
-        type="email" 
-        v-model="email" 
-        placeholder="Enter your email" 
-        required
-      />
+      <input type="email" v-model="email" placeholder="Enter your email" required />
       <button type="submit">Submit</button>
     </form>
   </div>

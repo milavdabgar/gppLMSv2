@@ -9,12 +9,12 @@ export default {
   methods: {
     async submitLogout() {
       try {
-        await this.$store.dispatch('logout');
-        this.$router.push('/login');
+        await this.$store.dispatch("logout");
+        this.$router.push("/login");
       } catch (error) {
-        console.log(error)  
+        console.log(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>

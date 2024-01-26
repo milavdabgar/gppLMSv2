@@ -1,29 +1,14 @@
 <template>
-    <div>
-      <h2>Change Password</h2>
-      <form @submit.prevent="changePassword">
-        <input 
-          type="password" 
-          v-model="password" 
-          placeholder="Current Password" 
-          required
-        />
-        <input 
-          type="password" 
-          v-model="newPassword" 
-          placeholder="New Password" 
-          required
-        />
-        <input 
-          type="password" 
-          v-model="newPasswordConfirm" 
-          placeholder="Confirm New Password" 
-          required
-        />
-        <button type="submit">Change Password</button>
-      </form>
-    </div>
-  </template>
+  <div>
+    <h2>Change Password</h2>
+    <form @submit.prevent="changePassword">
+      <input type="password" v-model="password" placeholder="Current Password" required />
+      <input type="password" v-model="newPassword" placeholder="New Password" required />
+      <input type="password" v-model="newPasswordConfirm" placeholder="Confirm New Password" required />
+      <button type="submit">Change Password</button>
+    </form>
+  </div>
+</template>
 
 <script>
 import axios from 'axios';

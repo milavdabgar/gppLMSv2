@@ -15,7 +15,6 @@
         <router-link to="/authors">Author Management</router-link>
       </li>
     </ul>
-    <!-- Librarian dashboard content -->
     <book-loan-requests-list-component />
     <book-loans-list-component />
   </div>

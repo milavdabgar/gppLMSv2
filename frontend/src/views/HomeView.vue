@@ -1,16 +1,18 @@
 <template>
   <div>
-    <!-- Home view content -->
-    <book-loan-request-component />
+    <browse-books> </browse-books>
+    <browse-genres> </browse-genres>
   </div>
 </template>
 
 <script>
-import BookLoanRequestComponent from '@/components/BookLoanRequestComponent';
+import BrowseBooks from "@/components/BrowseBooks.vue";
+import BrowseGenres from "@/components/BrowseGenres.vue";
 
 export default {
   components: {
-    BookLoanRequestComponent
-  }
+    BrowseBooks,
+    BrowseGenres,
+  },
 };
 </script>

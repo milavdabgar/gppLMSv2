@@ -1,5 +1,7 @@
 from flask import Blueprint, request
 from flask_restful import Resource, Api
+from sqlalchemy import desc
+from urllib.parse import parse_qs
 from app.models import (
     db,
     user_datastore,
@@ -27,17 +29,54 @@ crud_api = Api(crud_api_bp)
 
 
 # Base API class
+# class BaseApi(Resource):
+#     model = None
+#     schema = None
+#     def get(self, id=None):
+#         if id:
+#             obj = self.model.query.get_or_404(id)
+#             return self.schema.dump(obj)
+#         else:
+#             objs = self.model.query.all()
+#             return self.schema.dump(objs, many=True)
 
 class BaseApi(Resource):
     model = None
     schema = None
+
     def get(self, id=None):
         if id:
             obj = self.model.query.get_or_404(id)
             return self.schema.dump(obj)
         else:
-            objs = self.model.query.all()
+            query = self.model.query
+            query = self.apply_filters(query)
+            query = self.apply_sorting(query)
+            objs = query.all()
             return self.schema.dump(objs, many=True)
+
+    def apply_filters(self, query):
+        for key in request.args:
+            if key.startswith('filters['):
+                # Extracting the actual filter key from 'filters[<key>]'
+                filter_key = key[8:-1]  # Removes 'filters[' and ']'
+                if hasattr(self.model, filter_key):
+                    filter_value = request.args[key]
+                    query = query.filter(getattr(self.model, filter_key) == filter_value)
+        return query
+    
+
+    def apply_sorting(self, query):
+        sort_by = request.args.get('sort_by')
+        sort_order = request.args.get('sort_order', 'asc')
+
+        if sort_by and hasattr(self.model, sort_by):
+            sort_column = getattr(self.model, sort_by)
+            if sort_order == 'desc':
+                query = query.order_by(desc(sort_column))
+            else:
+                query = query.order_by(sort_column)
+        return query
 
     def post(self):
         obj = self.schema.load(request.json)

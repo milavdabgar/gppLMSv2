@@ -54,8 +54,7 @@ export default {
       return book.title;
     },
     async fetchLoans() {
-      const filter = { status: "requested" };
-      const loanData = await BookLoanService.getLoans(filter);
+      const loanData = await BookLoanService.getLoans();
       const loansWithTitles = await Promise.all(
         loanData.map(async (loan) => {
           const book = await BookService.getBookById(loan.book_id);

@@ -12,7 +12,6 @@
         <router-link to="/browse-genres">BrowseGenres</router-link>
       </li>
     </ul>
-    <!-- Member dashboard content -->
     <book-loan-request-component />
     <book-loans-list-component />
   </div>

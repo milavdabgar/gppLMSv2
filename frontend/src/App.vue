@@ -7,8 +7,8 @@
       <router-link to="/member/home">MemberDashboardView</router-link>
     </nav>
     <nav>
-      <router-link to="/register">Register</router-link> |  
-      <router-link to="/login">Login</router-link> | 
+      <router-link to="/register">Register</router-link> |
+      <router-link to="/login">Login</router-link> |
       <router-link to="/logout">Logout</router-link>
     </nav>
     <router-view />

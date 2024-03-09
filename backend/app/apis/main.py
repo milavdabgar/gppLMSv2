@@ -51,7 +51,8 @@ def approve_loan(loan_id):
 @api_bp.route("/api/bookloans/<int:loan_id>/return", methods=["PUT"])
 def return_loan(loan_id):
     loan = BookLoan.query.get(loan_id)
-    loan.returned_date = datetime.utcnow().date()
+    # loan.returned_date = datetime.utcnow().date()
+    loan.returned_date = datetime.now(datetime.timezone.utc).date()
     loan.status = "returned"
     db.session.commit()
     return book_loan_schema.jsonify(loan)

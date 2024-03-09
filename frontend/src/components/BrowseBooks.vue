@@ -11,8 +11,7 @@
 </template>
 
 <script>
-import BookService from '@/services/BookService';
-import BookLoanService from '@/services/BookLoanService';
+import { bookService, bookLoanService } from '@/services/ApiService';
 
 export default {
   data() {
@@ -26,7 +25,7 @@ export default {
   methods: {
     async loadBooks() {
       try {
-        this.books = await BookService.getBooks();
+        this.books = await bookService.getAll();
       } catch (error) {
         console.error(error);
       }
@@ -37,11 +36,10 @@ export default {
         const loan = {
           book_id: selectedBookId,
           member_id: this.$store.state.user.id,
-          status: 'requested'
+          status: 'requested',
         };
-        await BookLoanService.createLoan(loan);
+        await bookLoanService.create(loan);
         this.$emit('loanCreated');
-        this.selectedBookId = null;
       } catch (error) {
         console.error(error);
       }

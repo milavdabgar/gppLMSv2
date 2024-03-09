@@ -8,11 +8,6 @@ export default {
     return response.data;
   },
 
-  // async getLoans(params = {}) {
-  //   const response = await axios.get(API_URL, { params });
-  //   return response.data;
-  // },
-
   async getLoans(filters = {}, sort_by = {}, sort_order={}) {
     const queryParams = {
       filters: filters,

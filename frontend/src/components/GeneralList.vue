@@ -12,7 +12,14 @@
 </template>
 
 <script>
-import axios from "axios";
+import { userService, authorService, genreService, bookService } from "@/services/ApiService";
+
+const serviceMap = {
+    users: userService,
+    authors: authorService,
+    genres: genreService,
+    books: bookService,
+};
 
 export default {
     props: {
@@ -42,77 +49,23 @@ export default {
             handler() {
                 this.fetchData();
             },
-            immediate: true, // fetch on initial load
+            immediate: true,
         },
     },
 
     methods: {
-        fetchData() {
-            if (this.resourceType === "books") {
-                this.fetchBooks();
-            } else if (this.resourceType === "authors") {
-                this.fetchAuthors();
-            } else if (this.resourceType === "genres") {
-                this.fetchGenres();
-            } else if (this.resourceType === "users") {
-                this.fetchUsers();
+        async fetchData() {
+            try {
+                const service = serviceMap[this.resourceType];
+                const data = await service.getAll();
+                this.items = data.map((item) => ({
+                    id: item.id,
+                    displayText: item.title || item.name || item.email,
+                }));
+                this.title = this.resourceType.charAt(0).toUpperCase() + this.resourceType.slice(1);
+            } catch (error) {
+                console.error(error);
             }
-        },
-
-        fetchBooks() {
-            axios.get("http://localhost:5000/api/books").then((res) => {
-                let books = res.data.map((book) => {
-                    return {
-                        id: book.id,
-                        displayText: book.title,
-                    };
-                });
-
-                this.items = books;
-                this.title = "Books";
-            });
-        },
-
-        fetchAuthors() {
-            axios.get("http://localhost:5000/api/authors").then((res) => {
-                let authors = res.data.map((author) => {
-                    return {
-                        id: author.id,
-                        displayText: author.name,
-                    };
-                });
-
-                this.items = authors;
-                this.title = "Authors";
-            });
-        },
-
-        fetchGenres() {
-            axios.get("http://localhost:5000/api/genres").then((res) => {
-                let genres = res.data.map((genre) => {
-                    return {
-                        id: genre.id,
-                        displayText: genre.name,
-                    };
-                });
-
-                this.items = genres;
-                this.title = "Genres";
-            });
-        },
-
-        fetchUsers() {
-            axios.get("http://localhost:5000/api/users").then((res) => {
-                let users = res.data.map((user) => {
-                    return {
-                        id: user.id,
-                        displayText: user.email,
-                    };
-                });
-
-                this.items = users;
-                this.title = "Users";
-            });
         },
     },
 };

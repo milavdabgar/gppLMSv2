@@ -10,21 +10,20 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { genreService } from '@/services/ApiService';
 
 export default {
   data() {
     return {
-      genres: []
+      genres: [],
     };
   },
   async created() {
     try {
-      const response = await axios.get('http://localhost:5000/api/genres');
-      this.genres = response.data;
+      this.genres = await genreService.getAll();
     } catch (error) {
       console.error(error);
     }
-  }
+  },
 };
 </script>

@@ -4,7 +4,7 @@
     <book-loans-list-component />
   </div>
 </template>
-  
+
 <script>
 import BookLoansListComponent from '@/components/BookLoansListComponent';
 

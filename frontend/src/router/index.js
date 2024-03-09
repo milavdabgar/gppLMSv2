@@ -1,21 +1,21 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import MyLoansView from "@/views/MyLoansView.vue"
+import HomeView from "@/views/HomeView.vue";
+import MyLoansView from "@/views/MyLoansView.vue";
 import LibrarianDashboardView from "@/views/LibrarianDashboardView.vue";
-import MemberDashboardView from "@/views/MemberDashboardView.vue"
+import MemberDashboardView from "@/views/MemberDashboardView.vue";
 
-import UserRegistration from '@/components/auth/UserRegistration.vue';
-import UserLogin from '@/components/auth/UserLogin.vue';
-import UserLogout from '../components/auth/UserLogout.vue';
-import ForgotPassword from '@/components/auth/ForgotPassword.vue';
-import ChangePassword from '@/components/auth/ChangePassword.vue';
+import UserRegistration from "@/components/auth/UserRegistration.vue";
+import UserLogin from "@/components/auth/UserLogin.vue";
+import UserLogout from "../components/auth/UserLogout.vue";
+import ForgotPassword from "@/components/auth/ForgotPassword.vue";
+import ChangePassword from "@/components/auth/ChangePassword.vue";
 
 import RoleSelectionComponent from "@/components/RoleSelectionComponent.vue";
-import BookLoanDetailsComponent from "@/components/BookLoanDetailsComponent.vue"
+import BookLoanDetailsComponent from "@/components/BookLoanDetailsComponent.vue";
 
-import BrowseBooks from '@/components/BrowseBooks.vue';
-import BrowseGenres from '@/components/BrowseGenres.vue';
+import BrowseBooks from "@/components/BrowseBooks.vue";
+import BrowseGenres from "@/components/BrowseGenres.vue";
 import GeneralList from "@/components/GeneralList.vue";
 import GeneralEdit from "@/components/GeneralEdit.vue";
 
@@ -28,35 +28,34 @@ const routes = [
     component: HomeView,
   },
   {
-    path: '/select-role',
-    name: 'SelectRole',
-    component: RoleSelectionComponent
+    path: "/select-role",
+    name: "SelectRole",
+    component: RoleSelectionComponent,
   },
-  
+
   {
     path: "/member/loans",
     name: "MyLoansView",
     component: MyLoansView,
   },
 
-
   {
-    path: '/librarian/home',
-    name: 'LibrarianDashboardView',
-    component: LibrarianDashboardView
+    path: "/librarian/home",
+    name: "LibrarianDashboardView",
+    component: LibrarianDashboardView,
   },
 
   {
-    path: '/member/home',
-    name: 'MemberDashboardView',
-    component: MemberDashboardView
+    path: "/member/home",
+    name: "MemberDashboardView",
+    component: MemberDashboardView,
   },
   {
-    path: '/loan-details/:id',
-    name: 'LoanDetails',
-    component: BookLoanDetailsComponent
+    path: "/loan-details/:id",
+    name: "LoanDetails",
+    component: BookLoanDetailsComponent,
   },
-  
+
   {
     path: "/about",
     name: "about",
@@ -65,39 +64,39 @@ const routes = [
   },
 
   {
-    path: '/login',
-    name: 'UserLogin',
-    component: UserLogin
+    path: "/login",
+    name: "UserLogin",
+    component: UserLogin,
   },
   {
-    path: '/logout',
-    name: 'Logout',
-    component: UserLogout
+    path: "/logout",
+    name: "Logout",
+    component: UserLogout,
   },
   {
-    path: '/register',
-    name: 'UserRegister',
-    component: UserRegistration
+    path: "/register",
+    name: "UserRegister",
+    component: UserRegistration,
   },
   {
-    path: '/reset',
-    name: 'ForgotPassword',
-    component: ForgotPassword
+    path: "/reset",
+    name: "ForgotPassword",
+    component: ForgotPassword,
   },
   {
-    path: '/change',
-    name: 'ChangePassword',
-    component: ChangePassword
+    path: "/change",
+    name: "ChangePassword",
+    component: ChangePassword,
   },
   {
-    path: '/browse-books',
-    name: 'BrowseBooks',
-    component: BrowseBooks
+    path: "/browse-books",
+    name: "BrowseBooks",
+    component: BrowseBooks,
   },
   {
-    path: '/browse-genres',
-    name: 'BrowseGenres',
-    component: BrowseGenres
+    path: "/browse-genres",
+    name: "BrowseGenres",
+    component: BrowseGenres,
   },
 
   {

@@ -18,9 +18,7 @@
           <td>{{ loan.bookTitle }}</td>
           <td>{{ loan.status }}</td>
           <td>
-            <router-link :to="{ name: 'LoanDetails', params: { id: loan.id } }"
-              >View Details</router-link
-            >| 
+            <router-link :to="{ name: 'LoanDetails', params: { id: loan.id } }">View Details</router-link>|
             <button @click="returnLoan(loan)" v-if="canReturn(loan)">
               Return Loan
             </button>

@@ -1,3 +1,5 @@
+
+
 Library Management System v1 
 It is a multi-user app (one required librarian and other general users/students)
 - Used for issuing e-books to users
@@ -120,3 +122,68 @@ Styling and Aesthetics
 Proper login system
 Subscriptions or paid versions of the app, become author etc
 Ability of app to read books for a user (text-to-speech)
+
+
+# Library Management System v2
+
+## Project Requirements
+
+Here's a structured project guideline for the Library Management System:
+
+1. User Authentication and Authorization
+   - Implement user registration and login functionality using Flask Security or JWT-based token authentication
+   - Use Role-Based Access Control (RBAC) to differentiate between librarian and general users
+   - Only one librarian account should exist in the system
+
+2. General User Functionalities
+   - View all existing sections and e-books
+   - Request and return e-books (maximum of 5 e-books per user)
+   - Access e-books for a specific period (e.g., 7 days) with automatic revocation after the period ends
+   - Provide feedback for an e-book
+
+3. Librarian Functionalities
+   - Issue and revoke access to e-books for users
+   - Edit existing sections and e-books (content, author name, pages/volume, etc.)
+   - Remove sections and e-books
+   - Assign books to sections
+   - Monitor the current status of each e-book and the user it is issued to
+   - View available e-books in the library
+
+4. Search Functionality
+   - Implement search functionality for sections and e-books based on section, author, etc.
+
+5. Backend Jobs
+   - Implement export, reporting, and alert jobs
+   - Daily Reminder Job: Check if users have visited the app and send alerts via Google Chat webhook, SMS, or email
+   - Monthly Activity Report Job: Generate a monthly progress report in HTML or PDF format and send it to users via email
+
+6. Backend Performance
+   - Optimize backend performance for efficient handling of requests and data processing
+
+7. Core Features
+   - Librarian Dashboard: Provide an overview of the library system for the librarian
+   - General User Profile: Allow users to view and update their profile information
+   - Section Management: Enable the librarian to add, edit, and remove sections
+   - E-book Management: Allow the librarian to add, edit, and remove e-books
+
+8. Recommended Features (Optional)
+   - Download e-books as PDF for a price
+   - APIs for interaction with sections and books (CRUD operations)
+   - Additional APIs for generating graphs for the librarian dashboard
+   - Form validation for all input fields with suitable messages
+   - Backend validation before storing or retrieving data from the database
+
+9. Optional Features
+   - Styling and aesthetics to enhance the user interface
+   - Proper login system with additional security measures
+   - Subscription or paid versions of the app with additional features (e.g., become an author)
+   - Text-to-speech functionality for reading e-books to users
+
+10. Storage and Encoding
+    - Ensure the storage system handles multiple languages (UTF-8 encoding is usually sufficient)
+
+11. Documentation and Deployment
+    - Prepare comprehensive documentation for the system, including user guides and technical documentation
+    - Deploy the Library Management System on a suitable hosting platform
+
+Remember to follow best practices for software development, including version control, testing, and code organization. Use appropriate frameworks and libraries to streamline the development process and ensure a robust and scalable system.

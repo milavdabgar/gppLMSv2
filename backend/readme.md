@@ -120,39 +120,3 @@ Styling and Aesthetics
 Proper login system
 Subscriptions or paid versions of the app, become author etc
 Ability of app to read books for a user (text-to-speech)
-
-
-function wise it should work. but class borrowed_book sounds odd. Can we use some other name or may be refactor totally the way library management system and its class work, like  bookrequest or transaction or account or any other. you may refactor database as far as you want.
-
-for newer perspective. can you just try to completely refactor database model for library management system. 
-
-just keep in mind that this lms is only going to be used for ebooks, but don't mention ebook, just use word book, keeping in mind further expansion. 
-
-i don't want you to change this
-User has subclasses- member, librarian
-member has - staff & student
-and staff has other types.
-
-try to come up with refactored database model with completely new perspective.
-Didn't get response due to network issues, please regenerate 
-
-create database models.py for flask book portal having flavours from audible, amazon books goodreads etc
-User Types: Member, Librarian, Admin
-Membership Types: Silver, Gold, Platinum
-membership duration: monthly, yearly, Lifetime
-
-
-book has types Physical book, ebook, audiobook
-a book can belong to multiple genres, wishlists, collections
-admin/librarian manages book genres
-
-a new member is by default a silver member
-user/member manages wishlist and collections
-Member can Rent book: max_boks_allowed, duration, renewals etc depends on Membership Type
-Members can buy/purchase books, different discounts depending on membership type Silver, Gold, Platinum 
-Free access books = different set of books based on membership type Silver, Gold, Platinum 
-transaction types - buy, rent etc
-members can create and manage wishlists
-members can arrange books in books collections of books available in his library. either purchased, rented or having free access.
-
-

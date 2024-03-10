@@ -84,7 +84,6 @@
 ├── frontend
 │   ├── babel.config.js
 │   ├── jsconfig.json
-│   ├── output.txt
 │   ├── package.json
 │   ├── package-lock.json
 │   ├── public
@@ -113,12 +112,12 @@
 │   │   │   ├── GeneralEdit.vue
 │   │   │   ├── GeneralList.vue
 │   │   │   └── RoleSelectionComponent.vue
+│   │   ├── config.js
 │   │   ├── main.js
 │   │   ├── router
 │   │   │   └── index.js
 │   │   ├── services
-│   │   │   ├── BookLoanService.js
-│   │   │   └── BookService.js
+│   │   │   └── ApiService.js
 │   │   ├── store.js
 │   │   └── views
 │   │       ├── AboutView.vue
@@ -130,6 +129,7 @@
 ├── Library Management System.pdf
 ├── Library Management System-v2_ MAD - II.pdf
 ├── report.md
+├── report-short.md
 └── ToDo.md
 
 21 directories, 111 files

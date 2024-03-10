@@ -37,6 +37,12 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
             "password",
         )
 
+class ProfileSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = User
+        load_instance = True
+        sqla_session = db.session
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'bio', 'location')
 
 class LibrarianSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -123,6 +129,9 @@ roles_schema = RoleSchema(many=True)
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
+
+profile_schema = ProfileSchema()
+profiles_schema = ProfileSchema(many=True)
 
 librarian_schema = LibrarianSchema()
 librarians_schema = LibrarianSchema(many=True)

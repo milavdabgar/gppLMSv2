@@ -75,10 +75,32 @@ class BookLoanService extends ApiService {
   }
 }
 
+class ProfileService extends ApiService {
+  async getProfile(userId) {
+    const response = await axios.get(`${this.apiUrl}/${userId}`);
+    return response.data;
+  }
+
+  async updateProfile(userId, data) {
+    const response = await axios.put(`${this.apiUrl}/${userId}`, data);
+    return response.data;
+  }
+}
+
+class BookService extends ApiService {
+  async getByGenre(genreId) {
+    const response = await axios.get(`${this.apiUrl}?filters[genre_id]=${genreId}`);
+    return response.data;
+  }
+}
+
+
+
 export default ApiService;
 
 export const userService = new ApiService("api/users");
 export const authorService = new ApiService("api/authors");
 export const genreService = new ApiService("api/genres");
-export const bookService = new ApiService("api/books");
+export const bookService = new BookService("api/books");
 export const bookLoanService = new BookLoanService("api/bookloans");
+export const profileService = new ProfileService("api/profile");

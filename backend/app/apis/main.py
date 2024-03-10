@@ -2,8 +2,8 @@ from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user
 from flask_security import auth_required, login_required
 from datetime import datetime
-from ..models import db, BookLoan
-from ..schemas import book_loan_schema, book_loans_schema, user_schema
+from ..models import db, BookLoan, User
+from ..schemas import book_loan_schema, book_loans_schema, user_schema, profile_schema
 
 api_bp = Blueprint("api_bp", __name__)
 
@@ -62,3 +62,20 @@ def return_loan(loan_id):
 @login_required
 def get_current_user():
     return user_schema.jsonify(current_user)
+
+
+@api_bp.route('/api/profile/<int:user_id>', methods=['GET'])
+def get_profile(user_id):
+    user = User.query.get(user_id)
+    if user:
+        return profile_schema.jsonify(user)
+    return jsonify({"error": "User not found"}), 404
+
+@api_bp.route('/api/profile/<int:user_id>', methods=['PUT'])
+def update_profile(user_id):
+    user = User.query.get(user_id)
+    if user:
+        updated_profile = profile_schema.load(request.json, instance=user, partial=True)
+        db.session.commit()
+        return profile_schema.jsonify(updated_profile)
+    return jsonify({"error": "User not found"}), 404

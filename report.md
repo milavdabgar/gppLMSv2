@@ -151,7 +151,6 @@ Remember to follow best practices for software development, including version co
 ├── frontend
 │   ├── babel.config.js
 │   ├── jsconfig.json
-│   ├── output.txt
 │   ├── package.json
 │   ├── package-lock.json
 │   ├── public
@@ -180,12 +179,12 @@ Remember to follow best practices for software development, including version co
 │   │   │   ├── GeneralEdit.vue
 │   │   │   ├── GeneralList.vue
 │   │   │   └── RoleSelectionComponent.vue
+│   │   ├── config.js
 │   │   ├── main.js
 │   │   ├── router
 │   │   │   └── index.js
 │   │   ├── services
-│   │   │   ├── BookLoanService.js
-│   │   │   └── BookService.js
+│   │   │   └── ApiService.js
 │   │   ├── store.js
 │   │   └── views
 │   │       ├── AboutView.vue
@@ -197,6 +196,7 @@ Remember to follow best practices for software development, including version co
 ├── Library Management System.pdf
 ├── Library Management System-v2_ MAD - II.pdf
 ├── report.md
+├── report-short.md
 └── ToDo.md
 
 21 directories, 111 files
@@ -1968,97 +1968,90 @@ export default router;
 
 ```
 
-### gppLMSv2/frontend/src/services/BookService.js
-
-This file contains the BookService, which is responsible for making API requests related to books. It includes methods for creating, retrieving, updating, and deleting books using the corresponding API endpoints.
-
+### gppLMSv2/frontend/src/services/ApiService.js
 ```javascript
 import axios from "axios";
+import config from "@/config";
 
-const API_URL = "http://localhost:5000/api/books";
+class ApiService {
+  constructor(endpoint) {
+    this.apiUrl = `${config.apiBaseUrl}/${endpoint}`;
+  }
 
-export default {
-  async createBook(book) {
-    const response = await axios.post(API_URL, book);
+  async create(data) {
+    const response = await axios.post(this.apiUrl, data);
     return response.data;
-  },
+  }
 
-  async getBooks(params = {}) {
-    const response = await axios.get(API_URL, { params });
-    return response.data;
-  },
-
-  async getBookById(id) {
-    const response = await axios.get(`${API_URL}/${id}`);
-    return response.data;
-  },
-
-  async updateBook(id, book) {
-    const response = await axios.put(`${API_URL}/${id}`, book);
-    return response.data;
-  },
-
-  async deleteBook(id) {
-    const response = await axios.delete(`${API_URL}/${id}`);
-    return response.data;
-  },
-};
-
-```
-
-
-
-### gppLMSv2/frontend/src/services/BookLoanService.js
-
-This file contains the BookLoanService, which is responsible for making API requests related to book loans. It includes methods for creating, retrieving, updating, deleting, and approving book loans using the corresponding API endpoints.
-
-```javascript
-import axios from "axios";
-
-const API_URL = "http://localhost:5000/api/bookloans";
-
-export default {
-  async createLoan(loan) {
-    const response = await axios.post(API_URL, loan);
-    return response.data;
-  },
-
-  // async getLoans(params = {}) {
-  //   const response = await axios.get(API_URL, { params });
-  //   return response.data;
-  // },
-
-  async getLoans(filters = {}, sort_by = {}, sort_order={}) {
+  async getAll(filters = {}, sort_by = {}, sort_order = {}) {
     const queryParams = {
       filters: filters,
       sort_by: sort_by,
-      sort_order: sort_order
+      sort_order: sort_order,
     };
-    const response = await axios.get(API_URL, { params: queryParams });
+    const response = await axios.get(this.apiUrl, { params: queryParams });
     return response.data;
-  },
-  
+  }
 
-  async getLoanById(id) {
-    const response = await axios.get(`${API_URL}/${id}`);
+  async getById(id) {
+    const response = await axios.get(`${this.apiUrl}/${id}`);
     return response.data;
-  },
+  }
 
-  async updateLoan(id, loan) {
-    const response = await axios.put(`${API_URL}/${id}`, loan);
+  async update(id, data) {
+    const response = await axios.put(`${this.apiUrl}/${id}`, data);
     return response.data;
-  },
+  }
 
-  async deleteLoan(id) {
-    const response = await axios.delete(`${API_URL}/${id}`);
+  async delete(id) {
+    const response = await axios.delete(`${this.apiUrl}/${id}`);
     return response.data;
-  },
+  }
+}
+
+class BookLoanService extends ApiService {
+  async fetchLoans(filter) {
+    const loanData = await this.getAll(filter);
+    return Promise.all(loanData.map(async loan => {
+      const book = await bookService.getById(loan.book_id);
+      loan.bookTitle = book.title;
+      return loan;
+    }));
+  }
+
+  async requestLoan(bookId, memberId) {
+    const loan = {
+      book_id: bookId,
+      member_id: memberId,
+      status: 'requested'
+    };
+    return this.create(loan);
+  }
 
   async approveLoan(id) {
-    const response = await axios.put(`${API_URL}/${id}/approve`);
+    const response = await axios.put(`${this.apiUrl}/${id}/approve`);
     return response.data;
-  },
-};
+  }
 
+  async returnLoan(loanId) {
+    const loan = await this.getById(loanId);
+    if (loan.status === "approved") {
+      const updatedLoanData = {
+        book_id: loan.book_id,
+        member_id: loan.member_id,
+        status: "returned",
+        returned_date: new Date().toISOString().split("T")[0],
+      };
+      await this.update(loanId, updatedLoanData);
+    }
+  }
+}
+
+export default ApiService;
+
+export const userService = new ApiService("api/users");
+export const authorService = new ApiService("api/authors");
+export const genreService = new ApiService("api/genres");
+export const bookService = new ApiService("api/books");
+export const bookLoanService = new BookLoanService("api/bookloans");
 ```
-

@@ -3,13 +3,16 @@
     <h1>Welcome Member</h1>
     <ul>
       <li>
-        <router-link to="/member/loans">MyLoansView</router-link>
+        <router-link to="/member/loans">Member Loans</router-link>
       </li>
       <li>
-        <router-link to="/browse-books">BrowseBooks</router-link>
+        <router-link to="/member/profile">Member Profile</router-link>
       </li>
       <li>
-        <router-link to="/browse-genres">BrowseGenres</router-link>
+        <router-link to="/browse-books">Browse Books</router-link>
+      </li>
+      <li>
+        <router-link to="/browse-genres">Browse Genres</router-link>
       </li>
     </ul>
     <book-loan-request-component />

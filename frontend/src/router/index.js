@@ -4,6 +4,10 @@ import HomeView from "@/views/HomeView.vue";
 import MyLoansView from "@/views/MyLoansView.vue";
 import LibrarianDashboardView from "@/views/LibrarianDashboardView.vue";
 import MemberDashboardView from "@/views/MemberDashboardView.vue";
+import BrowseLibraryView from '@/views/BrowseLibraryView.vue';
+
+import UserProfileViewComponent from '@/components/UserProfileViewComponent.vue';
+import UserProfileEditComponent from '@/components/UserProfileEditComponent.vue';
 
 import UserRegistration from "@/components/auth/UserRegistration.vue";
 import UserLogin from "@/components/auth/UserLogin.vue";
@@ -61,6 +65,24 @@ const routes = [
     name: "about",
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+  },
+
+  {
+    path: '/member/profile',
+    name: 'Profile',
+    component: UserProfileViewComponent,
+  },
+
+  {
+    path: '/member/profile/edit',
+    name: 'EditProfile',
+    component: UserProfileEditComponent,
+  },
+
+  {
+    path: '/member/library',
+    name: 'BrowseLibrary',
+    component: BrowseLibraryView,
   },
 
   {

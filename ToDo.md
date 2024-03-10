@@ -8,7 +8,7 @@
 
 
 2.  **Data Modeling (Core)**
-    *   [x]  Design models for sections, e-books, authors, user requests, book issues, feedback, etc.
+    *   [x]  Design models for genres, e-books, authors, user requests, book issues, feedback, etc.
     *   [x]  Consider relationships (one-to-many, many-to-many)
     *   [ ] Utilize UTF-8 encoding for multilingual support
    
@@ -17,12 +17,12 @@
     *   [x]  Implement Flask Security or your chosen JWT library
     *   [x]  Create user models with role differentiation (librarian, general user)
     *   [x]  Build login, registration, and logout views
-    *   [ ] Design a basic dashboard for both librarians and general users
+    *   [ ]  Design a basic dashboard for both librarians and general users
 
 
 4.  **General User Features (Core)**
-    *   [ ] Profile view and edit capabilities
-    *   [ ] Section and e-book browsing with search functionality
+    *   [x] Profile view and edit capabilities
+    *   [ ] Genre and e-book browsing with search functionality
     *   [ ] Implement the book request system (limit of 5)
     *   [ ] Implement time-bound book access (revocation after N days)
     *   [ ] Enable e-book feedback submission 
@@ -30,14 +30,14 @@
 5.  **Librarian Features (Core)** 
     *   [x] Issue book functionality
     *   [ ] Revoke book access
-    *   [x] Add, edit, and remove sections
+    *   [x] Add, edit, and remove genres
     *   [x] Add, edit, and remove e-books (including content changes)
-    *   [x] Assign books to sections
+    *   [x] Assign books to genres
     *   [ ] Monitor e-book status and current user
 
 6.  **Search Functionality (Core)**
-    *   [ ] Section-based search
-    *   [ ] E-book search (filter by author, section, etc.)
+    *   [ ] Genre-based search
+    *   [ ] E-book search (filter by author, genre, etc.)
 
 7.  **Background/Scheduled Jobs (Core)**
     *   [ ] Set up daily reminders (choose webhook, SMS, or email integration)
@@ -45,7 +45,7 @@
     *   [ ] Implement job scheduling (consider Flask-APScheduler or Celery)
 
 8.  **Recommended Features**
-    *   [x] API endpoints for sections and books (CRUD)
+    *   [x] API endpoints for genres and books (CRUD)
     *   [ ] Additional APIs for librarian dashboard graphs
     *   [ ] E-book download (PDF) with payment integration (if feasible)
 

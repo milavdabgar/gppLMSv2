@@ -2,9 +2,11 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import axios from "axios";
-// import axiosInstance from './axiosConfig';
+import config from "@/config";
 
 Vue.use(Vuex);
+
+const apiBaseUrl = config.apiBaseUrl;
 
 export default new Vuex.Store({
   plugins: [
@@ -38,7 +40,7 @@ export default new Vuex.Store({
     async register({ dispatch }, credentials) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/register",
+          `${apiBaseUrl}/register`,
           credentials,
           {
             params: {
@@ -60,7 +62,7 @@ export default new Vuex.Store({
     async login({ dispatch }, credentials) {
       try {
         const response = await axios.post(
-          "http://localhost:5000/login",
+          `${apiBaseUrl}/login`,
           credentials,
           {
             params: {
@@ -84,7 +86,7 @@ export default new Vuex.Store({
       if (token) {
         try {
           const userResponse = await axios.get(
-            "http://localhost:5000/api/current_user"
+            `${apiBaseUrl}/api/current_user`
           );
           commit("SET_USER", userResponse.data);
         } catch (error) {
@@ -95,7 +97,7 @@ export default new Vuex.Store({
 
     async logout({ commit }) {
       try {
-        await axios.post("http://localhost:5000/logout");
+        await axios.post(`${apiBaseUrl}/logout`);
         localStorage.removeItem("authToken");
         axios.defaults.headers.common["Authentication-Token"] = "";
         commit("CLEAR_USER");

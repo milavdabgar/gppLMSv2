@@ -1,8 +1,9 @@
 import axios from "axios";
+import config from "@/config";
 
 class ApiService {
-  constructor(apiUrl) {
-    this.apiUrl = apiUrl;
+  constructor(endpoint) {
+    this.apiUrl = `${config.apiBaseUrl}/${endpoint}`;
   }
 
   async create(data) {
@@ -37,7 +38,6 @@ class ApiService {
 }
 
 class BookLoanService extends ApiService {
-
   async fetchLoans(filter) {
     const loanData = await this.getAll(filter);
     return Promise.all(loanData.map(async loan => {
@@ -75,11 +75,10 @@ class BookLoanService extends ApiService {
   }
 }
 
-
 export default ApiService;
 
-export const userService = new ApiService("http://localhost:5000/api/users");
-export const authorService = new ApiService("http://localhost:5000/api/authors");
-export const genreService = new ApiService("http://localhost:5000/api/genres");
-export const bookService = new ApiService("http://localhost:5000/api/books");
-export const bookLoanService = new BookLoanService("http://localhost:5000/api/bookloans");
+export const userService = new ApiService("api/users");
+export const authorService = new ApiService("api/authors");
+export const genreService = new ApiService("api/genres");
+export const bookService = new ApiService("api/books");
+export const bookLoanService = new BookLoanService("api/bookloans");

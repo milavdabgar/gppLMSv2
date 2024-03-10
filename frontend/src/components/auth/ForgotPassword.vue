@@ -10,6 +10,8 @@
 
 <script>
 import axios from 'axios';
+import config from "@/config";
+const apiBaseUrl = config.apiBaseUrl;
 
 export default {
   data() {
@@ -20,7 +22,7 @@ export default {
   methods: {
     async submitEmail() {
       try {
-        const response = await axios.post('http://localhost:5000/reset', {
+        const response = await axios.post(`${apiBaseUrl}/reset`, {
           email: this.email
         });
         console.log(response.data);

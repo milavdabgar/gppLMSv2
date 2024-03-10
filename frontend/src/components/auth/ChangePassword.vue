@@ -12,6 +12,8 @@
 
 <script>
 import axios from 'axios';
+import config from "@/config";
+const apiBaseUrl = config.apiBaseUrl;
 
 export default {
   data() {
@@ -25,7 +27,7 @@ export default {
     async changePassword() {
       try {
         const authToken = localStorage.getItem('authToken');
-        const response = await axios.post('http://localhost:5000/change', {
+        const response = await axios.post(`${apiBaseUrl}/lchange`, {
           password: this.password,
           new_password: this.newPassword,
           new_password_confirm: this.newPasswordConfirm

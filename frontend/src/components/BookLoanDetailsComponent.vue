@@ -9,7 +9,6 @@
       <p>Due Date: {{ loanDetails.due_date }}</p>
       <p>Status: {{ loanDetails.status }}</p>
     </div>
-
     <form @submit.prevent="updateLoanDetails">
       <select v-model="loanDetails.status">
         <option>requested</option>
@@ -21,12 +20,12 @@
 </template>
 
 <script>
-import BookLoanService from "@/services/BookLoanService";
+import { bookLoanService } from "@/services/ApiService";
 
 export default {
   computed: {
     loanId() {
-      return this.$route.params.id
+      return this.$route.params.id;
     }
   },
   data() {
@@ -39,10 +38,10 @@ export default {
   },
   methods: {
     async fetchLoanDetails() {
-      this.loanDetails = await BookLoanService.getLoanById(this.loanId);
+      this.loanDetails = await bookLoanService.getById(this.loanId);
     },
     async updateLoanDetails() {
-      await BookLoanService.updateLoan(this.loanId, this.loanDetails);
+      await bookLoanService.update(this.loanId, this.loanDetails);
     },
   },
 };

@@ -19,26 +19,19 @@ export default {
       books: [],
     };
   },
-  created() {
-    this.loadBooks();
+  
+  async created() {
+    try {
+      this.books = await bookService.getAll();
+    } catch (error) {
+      console.error(error);
+    }
   },
+  
   methods: {
-    async loadBooks() {
+    async requestLoan(bookId) {
       try {
-        this.books = await bookService.getAll();
-      } catch (error) {
-        console.error(error);
-      }
-    },
-
-    async requestLoan(selectedBookId) {
-      try {
-        const loan = {
-          book_id: selectedBookId,
-          member_id: this.$store.state.user.id,
-          status: 'requested',
-        };
-        await bookLoanService.create(loan);
+        await bookLoanService.requestLoan(bookId, this.$store.state.user.id);
         this.$emit('loanCreated');
       } catch (error) {
         console.error(error);

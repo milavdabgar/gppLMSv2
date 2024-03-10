@@ -37,9 +37,41 @@ class ApiService {
 }
 
 class BookLoanService extends ApiService {
+
+  async fetchLoans(filter) {
+    const loanData = await this.getAll(filter);
+    return Promise.all(loanData.map(async loan => {
+      const book = await bookService.getById(loan.book_id);
+      loan.bookTitle = book.title;
+      return loan;
+    }));
+  }
+
+  async requestLoan(bookId, memberId) {
+    const loan = {
+      book_id: bookId,
+      member_id: memberId,
+      status: 'requested'
+    };
+    return this.create(loan);
+  }
+
   async approveLoan(id) {
     const response = await axios.put(`${this.apiUrl}/${id}/approve`);
     return response.data;
+  }
+
+  async returnLoan(loanId) {
+    const loan = await this.getById(loanId);
+    if (loan.status === "approved") {
+      const updatedLoanData = {
+        book_id: loan.book_id,
+        member_id: loan.member_id,
+        status: "returned",
+        returned_date: new Date().toISOString().split("T")[0],
+      };
+      await this.update(loanId, updatedLoanData);
+    }
   }
 }
 

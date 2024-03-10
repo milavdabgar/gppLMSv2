@@ -19,7 +19,7 @@
           <td>{{ loan.status }}</td>
           <td>
             <router-link :to="{ name: 'LoanDetails', params: { id: loan.id } }">View Details</router-link>|
-            <button @click="returnLoan(loan)" v-if="canReturn(loan)">
+            <button @click="handleReturnLoan(loan.id)" :disabled="loan.status !== 'approved'">
               Return Loan
             </button>
           </td>
@@ -30,8 +30,7 @@
 </template>
 
 <script>
-import BookLoanService from "@/services/BookLoanService";
-import BookService from "@/services/BookService";
+import { bookLoanService } from "@/services/ApiService";
 
 export default {
   props: ["memberId"],
@@ -42,40 +41,14 @@ export default {
     };
   },
 
-  created() {
-    this.fetchLoans();
+  async created() {
+    this.loans = await bookLoanService.fetchLoans();
   },
 
   methods: {
-    async getBookTitle(bookId) {
-      const book = await BookService.getBookById(bookId);
-      return book.title;
-    },
-    async fetchLoans() {
-      const loanData = await BookLoanService.getLoans();
-      const loansWithTitles = await Promise.all(
-        loanData.map(async (loan) => {
-          const book = await BookService.getBookById(loan.book_id);
-          loan.bookTitle = book.title;
-          return loan;
-        })
-      );
-      this.loans = loansWithTitles;
-    },
-
-    canReturn(loan) {
-      return loan.status === "approved";
-    },
-
-    async returnLoan(loan) {
-      const updatedLoanData = {
-        book_id: loan.book_id,
-        member_id: loan.member_id,
-        status: "returned",
-        returned_date: new Date().toISOString().split("T")[0],
-      };
-      await BookLoanService.updateLoan(loan.id, updatedLoanData);
-      this.fetchLoans(); // Refresh the list of loans
+    async handleReturnLoan(loanId) {
+      await bookLoanService.returnLoan(loanId);
+      this.loans = await bookLoanService.fetchLoans(); // Refresh the list of loans
     },
   },
 };

@@ -13,10 +13,8 @@
   </div>
 </template>
 
-
 <script>
-import BookLoanService from '@/services/BookLoanService';
-import BookService from '@/services/BookService';
+import { bookService, bookLoanService } from '@/services/ApiService';
 
 export default {
   data() {
@@ -26,27 +24,18 @@ export default {
     }
   },
 
-  created() {
-    this.loadBooks();
+  async created() {
+    try {
+      this.books = await bookService.getAll();
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   methods: {
-    async loadBooks() {
-      try {
-        this.books = await BookService.getBooks();
-      } catch (error) {
-        console.error(error);
-      }
-    },
-
     async requestLoan() {
       try {
-        const loan = {
-          book_id: this.selectedBookId,
-          member_id: this.$store.state.user.id,
-          status: 'requested'
-        };
-        await BookLoanService.createLoan(loan);
+        await bookLoanService.requestLoan(this.selectedBookId, this.$store.state.user.id);
         this.selectedBookId = null;
       } catch (error) {
         console.error(error);

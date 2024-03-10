@@ -1,5 +1,3 @@
-// BookLoanRequestsListComponent
-
 <template>
   <div class="book-loan-requests">
     <h2>Loan Requests</h2>
@@ -16,12 +14,12 @@
       <tbody>
         <tr v-for="loan in loans" :key="loan.id">
           <td>{{ loan.id }}</td>
-          <td> {{ loan.member_id }}</td>
+          <td>{{ loan.member_id }}</td>
           <td>{{ loan.bookTitle }}</td>
           <td>{{ loan.status }}</td>
           <td>
-            <button @click="approveLoan(loan.id)">Approve</button>
-            <button @click="rejectLoan(loan.id)">Reject</button>
+            <button @click="handleLoanAction(loan.id, 'approve')">Approve</button>
+            <button @click="handleLoanAction(loan.id, 'reject')">Reject</button>
           </td>
         </tr>
       </tbody>
@@ -29,10 +27,8 @@
   </div>
 </template>
 
-
 <script>
-import BookLoanService from '@/services/BookLoanService';
-import BookService from '@/services/BookService';
+import { bookLoanService } from '@/services/ApiService';
 
 export default {
   data() {
@@ -41,36 +37,23 @@ export default {
     }
   },
 
-  created() {
-    this.fetchLoans();
+  async created() {
+    await this.fetchLoans();
   },
 
   methods: {
-    async getBookTitle(bookId) {
-      const book = await BookService.getBookById(bookId);
-      return book.title;
-    },
-
     async fetchLoans() {
       const filter = { status: 'requested' };
-      const loanData = await BookLoanService.getLoans(filter);
-      const loansWithTitles = await Promise.all(loanData.map(async loan => {
-        const book = await BookService.getBookById(loan.book_id);
-        loan.bookTitle = book.title;
-        return loan;
-      }));
-      this.loans = loansWithTitles;
+      this.loans = await bookLoanService.fetchLoans(filter);
     },
 
-
-    async approveLoan(id) {
-      await BookLoanService.approveLoan(id);
-      this.fetchLoans();
-    },
-
-    async rejectLoan(id) {
-      await BookLoanService.deleteLoan(id);
-      this.fetchLoans();
+    async handleLoanAction(id, action) {
+      if (action === 'approve') {
+        await bookLoanService.approveLoan(id);
+      } else if (action === 'reject') {
+        await bookLoanService.delete(id);
+      }
+      await this.fetchLoans();
     }
   }
 }

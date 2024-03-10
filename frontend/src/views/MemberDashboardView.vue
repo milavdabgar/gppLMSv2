@@ -14,6 +14,9 @@
       <li>
         <router-link to="/browse-genres">Browse Genres</router-link>
       </li>
+      <li>
+        <router-link to="/member/library">Browse Library</router-link>
+      </li>
     </ul>
     <book-loan-request-component />
     <book-loans-list-component />

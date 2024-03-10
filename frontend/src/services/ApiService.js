@@ -40,18 +40,20 @@ class ApiService {
 class BookLoanService extends ApiService {
   async fetchLoans(filter) {
     const loanData = await this.getAll(filter);
-    return Promise.all(loanData.map(async loan => {
-      const book = await bookService.getById(loan.book_id);
-      loan.bookTitle = book.title;
-      return loan;
-    }));
+    return Promise.all(
+      loanData.map(async (loan) => {
+        const book = await bookService.getById(loan.book_id);
+        loan.bookTitle = book.title;
+        return loan;
+      })
+    );
   }
 
   async requestLoan(bookId, memberId) {
     const loan = {
       book_id: bookId,
       member_id: memberId,
-      status: 'requested'
+      status: "requested",
     };
     return this.create(loan);
   }
@@ -91,21 +93,12 @@ class BookService extends ApiService {
   async getByGenre(genreId) {
     const response = await axios.get(`${this.apiUrl}`, {
       params: {
-        'filters[genres][id]': genreId
-      }
+        "filters[genres][id]": genreId,
+      },
     });
     return response.data;
   }
-  
-
-  async getFiltered(filters) {
-    const response = await axios.get(this.apiUrl, { params: { filters } });
-    return response.data;
-  }
-
 }
-
-
 
 export default ApiService;
 

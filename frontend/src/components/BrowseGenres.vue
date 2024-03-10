@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2>Genres</h2>
+    <h1>Genres</h1>
     <ul>
-      <li v-for="genre in genres" :key="genre.id" @click="selectGenre(genre)">
+      <li v-for="genre in genres" :key="genre.id" @click="selectGenre(genre.id)">
         {{ genre.name }}
       </li>
     </ul>
@@ -18,7 +18,6 @@ export default {
       genres: [],
     };
   },
-
   async created() {
     try {
       this.genres = await genreService.getAll();
@@ -26,10 +25,9 @@ export default {
       console.error(error);
     }
   },
-
   methods: {
-    selectGenre(genre) {
-      this.$emit('genre-selected', genre);
+    selectGenre(genreId) {
+      this.$emit('genre-selected', genreId);
     },
   },
 };

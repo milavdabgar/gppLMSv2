@@ -28,18 +28,6 @@ crud_api_bp = Blueprint("crud_api_bp", __name__)
 crud_api = Api(crud_api_bp)
 
 
-# Base API class
-# class BaseApi(Resource):
-#     model = None
-#     schema = None
-#     def get(self, id=None):
-#         if id:
-#             obj = self.model.query.get_or_404(id)
-#             return self.schema.dump(obj)
-#         else:
-#             objs = self.model.query.all()
-#             return self.schema.dump(objs, many=True)
-
 class BaseApi(Resource):
     model = None
     schema = None

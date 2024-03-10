@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>Books</h2>
-    <input type="text" v-model="searchQuery" placeholder="Search books..." />
+    <h1>Books</h1>
+    <input type="text" v-model="searchQuery" @input="searchBooks" placeholder="Search books">
     <ul>
       <li v-for="book in filteredBooks" :key="book.id">
         {{ book.title }}
@@ -15,37 +15,64 @@
 import { bookService, bookLoanService } from '@/services/ApiService';
 
 export default {
+  props: {
+    selectedGenreId: {
+      type: Number,
+      default: null,
+    },
+  },
   data() {
     return {
       books: [],
       searchQuery: '',
     };
   },
-
   async created() {
-    try {
-      this.books = await bookService.getAll();
-    } catch (error) {
-      console.error(error);
-    }
+    await this.fetchBooks();
   },
-
   computed: {
     filteredBooks() {
-      return this.books.filter(book =>
-        book.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+      let filtered = this.books;
+      if (this.selectedGenreId) {
+        filtered = filtered.filter(book =>
+          book.genres.some(genre => genre.id === this.selectedGenreId)
+        );
+      }
+      if (this.searchQuery) {
+        filtered = filtered.filter(book =>
+          book.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+      }
+      return filtered;
     },
   },
-
   methods: {
-    async requestLoan(bookId) {
+    async fetchBooks() {
       try {
-        await bookLoanService.requestLoan(bookId, this.$store.state.user.id);
-        this.$emit('loanCreated');
+        if (this.selectedGenreId) {
+          this.books = await bookService.getByGenre(this.selectedGenreId);
+        } else {
+          this.books = await bookService.getAll();
+        }
       } catch (error) {
         console.error(error);
       }
+    },
+    async requestLoan(bookId) {
+      try {
+        await bookLoanService.requestLoan(bookId, this.$store.state.user.id);
+        this.$emit('loan-created');
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async searchBooks() {
+      await this.fetchBooks();
+    },
+  },
+  watch: {
+    selectedGenreId() {
+      this.fetchBooks();
     },
   },
 };

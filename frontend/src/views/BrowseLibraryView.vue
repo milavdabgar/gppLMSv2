@@ -2,7 +2,7 @@
   <div>
     <h1>Browse Library</h1>
     <BrowseGenres @genre-selected="onGenreSelected" />
-    <BrowseBooks :key="selectedGenreId" @loan-created="onLoanCreated" />
+    <BrowseBooks :selected-genre-id="selectedGenreId" @loan-created="onLoanCreated" />
   </div>
 </template>
 
@@ -15,18 +15,15 @@ export default {
     BrowseBooks,
     BrowseGenres,
   },
-
   data() {
     return {
       selectedGenreId: null,
     };
   },
-
   methods: {
-    onGenreSelected(genre) {
-      this.selectedGenreId = genre.id;
+    onGenreSelected(genreId) {
+      this.selectedGenreId = genreId;
     },
-
     onLoanCreated() {
       // Handle loan creation, e.g., show a success message
     },

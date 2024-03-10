@@ -29,7 +29,7 @@
 
 5.  **Librarian Features (Core)** 
     *   [x] Issue book functionality
-    *   [x] Revoke book access
+    *   [ ] Revoke book access
     *   [x] Add, edit, and remove sections
     *   [x] Add, edit, and remove e-books (including content changes)
     *   [x] Assign books to sections

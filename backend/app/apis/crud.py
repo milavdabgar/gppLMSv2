@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from flask_restful import Resource, Api
-from sqlalchemy import desc
+from sqlalchemy import desc, or_
 from urllib.parse import parse_qs
 from app.models import (
     db,
@@ -64,8 +64,67 @@ class BaseApi(Resource):
                     filter_value = request.args[key]
                     query = query.filter(getattr(self.model, filter_key) == filter_value)
         return query
-    
 
+        for key in request.args:
+            if key.startswith('filters['):
+                filter_key = key[8:-1]  # Removes 'filters[' and ']'
+                filter_value = request.args[key]
+                
+                if '__' in filter_key:
+                    # Handle relationships (e.g., 'genres__name')
+                    relationship, field = filter_key.split('__')
+                    if hasattr(self.model, relationship):
+                        related_model = getattr(self.model, relationship).property.mapper.class_
+                        if hasattr(related_model, field):
+                            query = query.join(related_model).filter(getattr(related_model, field) == filter_value)
+                elif filter_key.endswith('__in'):
+                    # Handle 'in' conditions (e.g., 'id__in')
+                    actual_key = filter_key[:-4]
+                    if hasattr(self.model, actual_key):
+                        filter_values = filter_value.split(',')
+                        query = query.filter(getattr(self.model, actual_key).in_(filter_values))
+                elif filter_key.endswith('__contains'):
+                    # Handle 'contains' conditions (e.g., 'title__contains')
+                    actual_key = filter_key[:-10]
+                    if hasattr(self.model, actual_key):
+                        query = query.filter(getattr(self.model, actual_key).contains(filter_value))
+                else:
+                    # Handle simple equality conditions
+                    if hasattr(self.model, filter_key):
+                        query = query.filter(getattr(self.model, filter_key) == filter_value)
+        
+        return query    
+
+
+        for key in request.args:
+            if key.startswith('filters['):
+                filter_key = key[8:-1]  # Removes 'filters[' and ']'
+                filter_value = request.args[key]
+                
+                if '__' in filter_key:
+                    # Handle relationships (e.g., 'genres__name')
+                    relationship, field = filter_key.split('__')
+                    if hasattr(self.model, relationship):
+                        related_model = getattr(self.model, relationship).mapper.class_
+                        if hasattr(related_model, field):
+                            query = query.join(related_model).filter(getattr(related_model, field) == filter_value)
+                elif filter_key.endswith('__in'):
+                    # Handle 'in' conditions (e.g., 'id__in')
+                    actual_key = filter_key[:-4]
+                    if hasattr(self.model, actual_key):
+                        filter_values = filter_value.split(',')
+                        query = query.filter(getattr(self.model, actual_key).in_(filter_values))
+                elif filter_key.endswith('__contains'):
+                    # Handle 'contains' conditions (e.g., 'title__contains')
+                    actual_key = filter_key[:-10]
+                    if hasattr(self.model, actual_key):
+                        query = query.filter(getattr(self.model, actual_key).contains(filter_value))
+                else:
+                    # Handle simple equality conditions
+                    if hasattr(self.model, filter_key):
+                        query = query.filter(getattr(self.model, filter_key) == filter_value)
+        
+        return query
     def apply_sorting(self, query):
         sort_by = request.args.get('sort_by')
         sort_order = request.args.get('sort_order', 'asc')

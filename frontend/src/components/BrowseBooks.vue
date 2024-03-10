@@ -15,13 +15,6 @@
 import { bookService, bookLoanService } from '@/services/ApiService';
 
 export default {
-  props: {
-    genre: {
-      type: Object,
-      default: null,
-    },
-  },
-
   data() {
     return {
       books: [],
@@ -30,7 +23,11 @@ export default {
   },
 
   async created() {
-    await this.fetchBooks();
+    try {
+      this.books = await bookService.getAll();
+    } catch (error) {
+      console.error(error);
+    }
   },
 
   computed: {
@@ -42,31 +39,13 @@ export default {
   },
 
   methods: {
-    async fetchBooks() {
-      try {
-        if (this.genre) {
-          this.books = await bookService.getByGenre(this.genre.id);
-        } else {
-          this.books = await bookService.getAll();
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    },
-
     async requestLoan(bookId) {
       try {
         await bookLoanService.requestLoan(bookId, this.$store.state.user.id);
-        this.$emit('loan-created');
+        this.$emit('loanCreated');
       } catch (error) {
         console.error(error);
       }
-    },
-  },
-
-  watch: {
-    async genre() {
-      await this.fetchBooks();
     },
   },
 };

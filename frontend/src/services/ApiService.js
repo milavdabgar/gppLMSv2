@@ -92,6 +92,20 @@ class BookService extends ApiService {
     const response = await axios.get(`${this.apiUrl}?filters[genre_id]=${genreId}`);
     return response.data;
   }
+
+  async getFiltered(filters) {
+    const response = await axios.get(this.apiUrl, { params: { filters } });
+    return response.data;
+  }
+
+  async getAll(genreId = null) {
+    const filters = {};
+    if (genreId) {
+      filters.genre_id = genreId;
+    }
+    const response = await axios.get(this.apiUrl, { params: { filters } });
+    return response.data;
+  }
 }
 
 

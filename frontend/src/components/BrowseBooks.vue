@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <h1>Books</h1>
-    <input type="text" v-model="searchQuery" @input="searchBooks" placeholder="Search books">
+  <div class="browse-books">
+    <h2>Books</h2>
     <ul>
       <li v-for="book in filteredBooks" :key="book.id">
         {{ book.title }}
@@ -16,15 +15,12 @@ import { bookService, bookLoanService } from '@/services/ApiService';
 
 export default {
   props: {
-    selectedGenreId: {
-      type: Number,
-      default: null,
-    },
+    searchQuery: String,
+    selectedFilters: Object,
   },
   data() {
     return {
       books: [],
-      searchQuery: '',
     };
   },
   async created() {
@@ -33,27 +29,44 @@ export default {
   computed: {
     filteredBooks() {
       let filtered = this.books;
-      if (this.selectedGenreId) {
-        filtered = filtered.filter(book =>
-          book.genres.some(genre => genre.id === this.selectedGenreId)
-        );
-      }
+
       if (this.searchQuery) {
         filtered = filtered.filter(book =>
           book.title.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
       }
+
+      if (this.selectedFilters.genres.length > 0) {
+        filtered = filtered.filter(book =>
+          book.genres.some(genre => this.selectedFilters.genres.includes(genre.id))
+        );
+      }
+
+      if (this.selectedFilters.authors.length > 0) {
+        filtered = filtered.filter(book =>
+          book.authors.some(author => this.selectedFilters.authors.includes(author.id))
+        );
+      }
+
+      if (this.selectedFilters.languages.length > 0) {
+        filtered = filtered.filter(book =>
+          this.selectedFilters.languages.includes(book.language)
+        );
+      }
+
+      if (this.selectedFilters.ratings.length > 0) {
+        filtered = filtered.filter(book =>
+          this.selectedFilters.ratings.includes(book.rating)
+        );
+      }
+
       return filtered;
     },
   },
   methods: {
     async fetchBooks() {
       try {
-        if (this.selectedGenreId) {
-          this.books = await bookService.getByGenre(this.selectedGenreId);
-        } else {
-          this.books = await bookService.getAll();
-        }
+        this.books = await bookService.getAll();
       } catch (error) {
         console.error(error);
       }
@@ -66,14 +79,13 @@ export default {
         console.error(error);
       }
     },
-    async searchBooks() {
-      await this.fetchBooks();
-    },
-  },
-  watch: {
-    selectedGenreId() {
-      this.fetchBooks();
-    },
   },
 };
 </script>
+
+<style scoped>
+.browse-books {
+  flex: 1;
+  padding: 10px;
+}
+</style>

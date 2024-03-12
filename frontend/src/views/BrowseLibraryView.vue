@@ -2,7 +2,7 @@
   <div class="browse-library">
     <SearchBar @search="onSearch" />
     <div class="main-content">
-      <SideMenu @filter-changed="onFilterChanged" />
+      <SideMenu :is-open="isSideMenuOpen" @toggle="toggleSideMenu" @filter-changed="onFilterChanged" />
       <BrowseBooks :search-query="searchQuery" :selected-filters="selectedFilters" @loan-created="onLoanCreated" />
     </div>
   </div>
@@ -21,16 +21,26 @@ export default {
   },
   data() {
     return {
+      isSideMenuOpen: true,
       searchQuery: '',
       selectedFilters: {
         genres: [],
         authors: [],
         languages: [],
         ratings: [],
+        types: [],
+        publishers: [],
+        publicationDates: [],
+        freeAccessInMemberships: [],
+        collections: [],
+        wishlists: [],
       },
     };
   },
   methods: {
+    toggleSideMenu() {
+      this.isSideMenuOpen = !this.isSideMenuOpen;
+    },
     onSearch(query) {
       this.searchQuery = query;
     },

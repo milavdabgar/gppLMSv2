@@ -22,6 +22,7 @@
   <style scoped>
   .search-bar {
     padding: 10px;
+    width: 300px;
   }
   
   .search-bar input {

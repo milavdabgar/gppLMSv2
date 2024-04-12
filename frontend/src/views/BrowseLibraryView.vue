@@ -4,8 +4,8 @@
     <div class="main-content">
       <SideMenu :is-open="isSideMenuOpen" @toggle="toggleSideMenu" @filter-changed="onFilterChanged" />
       <div class="content">
-        <BrowseGenre @genre-selected="onGenreSelected" />
         <BrowseBooks :search-query="searchQuery" :selected-filters="selectedFilters" @loan-created="onLoanCreated" />
+        <BrowseGenre @genre-selected="onGenreSelected" />
       </div>
     </div>
   </div>
@@ -68,11 +68,9 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
 .main-content {
   display: flex;
 }
-
 .content {
   flex: 1;
   padding: 20px;

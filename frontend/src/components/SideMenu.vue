@@ -119,11 +119,7 @@ export default {
 
 <style scoped>
 .side-menu {
-  position: relative;
-  width: 40px;
-  background-color: #f0f0f0;
-  transition: width 0.3s;
-  overflow: hidden;
+  height: 100%;
 }
 
 .side-menu.open {
@@ -167,7 +163,6 @@ export default {
 
 .side-menu-body {
   padding: 10px;
-  padding-left: 50px; /* Adjust this value to give space for the hamburger button */
 }
 
 .slide-enter-active,

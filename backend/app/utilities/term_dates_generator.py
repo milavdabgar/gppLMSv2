@@ -34,10 +34,10 @@ def generate_class_dates(days_of_week, start_date, end_date, holidays):
     return class_dates
 
 # Example usage
-days_of_week = ["Monday"] # Days of the week for the class
-term_start = "01/02/2024" # Term start date
-term_end = "25/05/2024" # Term end date
-holidays = ["26/01/2024", "08/03/2024", "25/03/2024", "29/03/2024", "10/04/2024", "11/04/2024", "17/04/2024", "10/05/2024"] # List of holidays
+days_of_week = ["Monday", "Thursday"] # Days of the week for the class
+term_start = "01/01/2025" # Term start date
+term_end = "28/04/2025" # Term end date
+holidays = ["14/01/2025", "26/01/2025", "14/03/2025", "31/03/2025", "10/04/2025", "14/04/2025", "18/04/2025", "29/04/2025", "07/06/2025"] # List of holidays
 
 # Generate the list of class dates for all specified days of the week
 class_dates = generate_class_dates(days_of_week, term_start, term_end, holidays)
